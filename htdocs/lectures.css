@@ -1,0 +1,89 @@
+#myDIV {
+  width: 100%;
+  padding: 50px 0;
+  text-align: center;
+  background-color: lightblue;
+  margin-top: 20px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: #efeaeab8;
+}
+
+h2 {
+  color: #000000b5;
+}
+
+#background {
+  background-image: url(./img/background3.jpg);
+  overflow: auto;
+  height: 600px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  margin-bottom: 70px
+}
+
+#CourseTitle {
+  color: white;
+  font-size: 20px;
+  background-color: transparent;
+  text-align: center;
+  padding: 10px;
+  margin-top: 150px;
+  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+}
+
+.title {
+  color: #000000b5;
+  font-size: 25px;
+  margin-left:35%;
+  margin-right:35%;
+  text-align: center;
+  border:solid;
+  background-color: white;
+}
+.title:hover{
+  background-color: #c8d0cc;
+  cursor:pointer;
+  color:white;
+  border:solid;
+  border-color:#000000cc;
+    
+}   
+
+
+.space {
+  margin-bottom: 20px;
+  word-wrap: break-word;
+}
+
+.standard {
+  display: none;
+  margin-top: 14px;
+}
+
+.center {
+  margin: auto;
+  width: 90%;
+  border: 1px solid;
+  padding: 10px;
+  background-color: white;
+  border-radius: 15px;
+  color: black;
+}
+
+@media screen and (max-width: 840px) {
+  .active {
+    font-weight: bold;
+    color: white;
+    border-bottom: 2px solid gold;
+    width: 100px;
+  }
+  .subtitle {
+    text-align: center;
+  }
+}

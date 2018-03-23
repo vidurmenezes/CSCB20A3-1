@@ -1,0 +1,62 @@
+#background {
+  background-image: url(./img/background5.jpg);
+  overflow: auto;
+  height: 600px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+#CourseTitle {
+  color: white;
+  font-size: 20px;
+  background-color: transparent;
+  text-align: center;
+  padding: 10px;
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 150px;
+  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+}
+
+.mainsection {
+  text-align: center;
+  color: black;
+  margin: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+  height: 200px;
+  border: 1px solid black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: white;
+  /*border-radius: 25px;*/
+}
+
+@media screen and (max-width: 840px) {
+  #CourseTitle {
+    text-align: center;
+    width: auto;
+    margin-top: 200px;
+    margin-left: 0px;
+  }
+  #background {
+  background-image: url(./img/background.jpg);
+  overflow: auto;
+  height: 600px;
+}
+  .mainsection {
+  text-align: center;
+  color: black;
+  margin: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+  height: auto;
+  border: 1px solid black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: white;
+  #border-radius: 25px;
+}
+
+}

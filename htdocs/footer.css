@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: #F6F6F6;
+  /*background-image: -webkit-linear-gradient(320deg, #004E95 60%, #1f1f1f 50%);*/
+  min-height: 500px;
+}
+
+h2 {
+  color: #000000b5;
+}
+.gold{
+    color: gold;
+}
+h1 {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 62px;
+}
+.footer{
+    background-color:#000000cc;
+    color: white;
+    width: auto;
+    height: 119px;
+    margin-top: 10px;
+    padding: 10px;
+    text-align: center;
+}
+.footer h2{
+float: left;
+  width:33.33333%;
+  text-align:center;
+  color: white;
+    font-family: 'Nunito Sans', sans-serif;
+}
+.footer p{
+float: center;
+    padding: -10px;
+  text-align:center;
+  color: white;
+    font-size: 15px;
+    margin-top: 0px;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.footer p1{
+width:33.33333%;
+    float: left;
+    font-size: 23px;
+  color: white;
+    font-family: 'Nunito Sans', sans-serif;
+    text-align: left;
+}
+.footer p2{
+width:33.33333%;
+    float: left;
+    font-size: 23px;
+  color: white;
+    font-family: 'Nunito Sans', sans-serif;
+    text-align: right;
+}
+.footer p3{
+width:33.33333%;
+    float: left;
+    font-size: 23px;
+  color: white;
+    font-family: 'Nunito Sans', sans-serif;
+    text-align: center;
+}
+@media screen and (max-width: 900px) {
+ .footer{
+    background-color:#000000cc;
+    color: white;
+    width: auto;
+    height: 119px;
+    margin-top: 10px;
+    padding: 10px;
+     padding-bottom: 50px;
+    text-align: center;
+}
+    
+    
+    
+    
+}

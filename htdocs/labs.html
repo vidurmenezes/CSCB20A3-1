@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="labs.css">
+
+<link rel="stylesheet" type="text/css" href="navbar.css">
+ <link rel="stylesheet" type="text/css" href="footer.css">
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
+<link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
+
+</head>
+<script>
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
+    }
+  }
+
+  function toggle_visibility(id) {
+    var e = document.getElementById(id);
+    if (e.style.display == 'block')
+      e.style.display = 'none';
+    else
+      e.style.display = 'block';
+  }
+    function toggle_visibility_all(id) {
+        for (i = 1; i < 100; i++) {
+            var text="";
+            text += id + i;
+            //document.write(text);
+            var e = document.getElementById(text);
+
+            if (e.style.display == 'block')
+              e.style.display = 'none';
+            else
+              e.style.display = 'block';
+            }
+
+        }
+
+</script>
+<body>
+  <div class="topnav" id="myTopnav">
+    <a href="index.html">Home</a>
+    <a href="news.html">News</a>
+    <a href="calendar.html">Calendar</a>
+    <a href="https://piazza.com/class/jcpjjp5l4bywd">Piazza</a>
+    <a href="lectures.html">Lectures</a>
+    <a href="labs.html" class="active">Labs</a>
+    <a href="assignment.html">Assignments</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVx2TGzeBfwGCbDxO-3J21F73uBlIlM-dcIW__ZesKLMYBnQ/viewform">Feedback</a>
+    <a href="https://markus.utsc.utoronto.ca/cscb20w18/?locale=en">MarkUs</a>
+    <a href="contact.html">Contact</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+  </div>
+     <div id="background">
+  <div id="CourseTitle">
+ <div class="myBounceDiv">
+    <h1>LABS</h1>
+      <br>
+      <i class="fas fa-flask fa-5x"></i>
+      </div>
+  </div>
+</div>
+    <a onclick="toggle_visibility_all('Week');">
+ <div class="title">
+      EXPAND ALL
+    </div>
+        </a>
+    <br>
+
+  <div class="space">
+    <a onclick="toggle_visibility('Week1');">
+    <div class="title">
+      LAB 1
+    </div>
+    </a>
+    <div class="standard" id="Week1">
+      <div class="center">
+        <h3><u>Extra Material</u></h3>
+        <ul id="extralinks">
+          <li>
+            What is a database? Very high level introduction to a Database.
+            <br>
+            <a href="http://web.calstatela.edu/library/whatisadatabase.htm">http://web.calstatela.edu/library/whatisadatabase.htm</a>
+          </li>
+          <li>
+            A basic tutorial on SQL
+            <br>
+            <a href="https://www.w3resource.com/sql/tutorials.php">https://www.w3resource.com/sql/tutorials.php</a>
+          </li>
+          <li>
+            Basic introduction to SQL
+            <br>
+            <a href=" https://www.w3schools.com/sql/"> https://www.w3schools.com/sql/</a>
+          </li>
+          <li>
+            Difference between a Primary and a Foreign Key
+            <br>
+            <a href="https://www.essentialsql.com/what-is-the-difference-between-a-primary-key-and-a-foreign-key/">https://www.essentialsql.com/what-is-the-difference-between-a-primary-key-and-a-foreign-key/</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="space">
+     <a onclick="toggle_visibility('Week2');">
+    <div class="title">
+        LAB 2
+    </div>
+    </a>
+    <div class="standard" id="Week2">
+      <div class="center">
+        <ul id="weeklist">
+          <div id="topic">
+            Introduction, Databases background
+          </div>
+          <div>
+            <h3><u>Summary</u></h3>
+            <ul id="summary">
+              <li>Expectations of the course.</li>
+              <li>What is a database?</li>
+              <li>What database technologies and web technologies are covered in this course? </li>
+              <li>SQL and PHP</li>
+              <li>HTML, CSS, JavaScript and JQuery</li>
+              <li>What is a internet?</li>
+              <li>network of computers and routers.</li>
+              <li>What is a protocol?</li>
+              <li>We looked at briefly the http protocol and from a very high level understood the request/response workflow.</li>
+              <li>Relation in Database</li>
+              <li>Tuple, record, data row (all mean the same thing). And a collection of these makes up a Relation. </li>
+              <li>Relation Schema (what columns/relation name)</li>
+              <li>Database Schema</li>
+              <li>Foriegn Key and Primary Key</li>
+            </ul>
+            <h3><u>Lecture Material</u></h3>
+
+            <ul id="lecturelinks">
+              <li>
+                <a href="https://portal.utoronto.ca/bbcswebdav/pid-6516926-dt-content-rid-42416763_2/courses/Winter-2018-CSCB20H3-S-LEC01/B20Week1.pdf">B20Week1.pdf</a>
+              </li>
+              <li>
+                <a href="https://portal.utoronto.ca/bbcswebdav/pid-6516926-dt-content-rid-42416762_2/courses/Winter-2018-CSCB20H3-S-LEC01/B20Week2.pdf">B20Week2.pdf</a>
+              </li>
+            </ul>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+    <div class="space">
+    <a onclick="toggle_visibility('Week3');">
+    <div class="title">
+    LAB 3
+    </div>
+    </a>
+    <div class="standard" id="Week3">
+      <div class="center">
+        <ul id="weeklist">
+          <div id="topic">
+            Introduction, Databases background
+          </div>
+          <div>
+            <h3><u>Summary</u></h3>
+            <ul id="summary">
+              <li>Expectations of the course.</li>
+              <li>What is a database?</li>
+              <li>What database technologies and web technologies are covered in this course? </li>
+              <li>SQL and PHP</li>
+              <li>HTML, CSS, JavaScript and JQuery</li>
+              <li>What is a internet?</li>
+              <li>network of computers and routers.</li>
+              <li>What is a protocol?</li>
+              <li>We looked at briefly the http protocol and from a very high level understood the request/response workflow.</li>
+              <li>Relation in Database</li>
+              <li>Tuple, record, data row (all mean the same thing). And a collection of these makes up a Relation. </li>
+              <li>Relation Schema (what columns/relation name)</li>
+              <li>Database Schema</li>
+              <li>Foriegn Key and Primary Key</li>
+            </ul>
+            <h3><u>Lecture Material</u></h3>
+
+            <ul id="lecturelinks">
+              <li>
+                <a href="https://portal.utoronto.ca/bbcswebdav/pid-6516926-dt-content-rid-42416763_2/courses/Winter-2018-CSCB20H3-S-LEC01/B20Week1.pdf">B20Week1.pdf</a>
+              </li>
+              <li>
+                <a href="https://portal.utoronto.ca/bbcswebdav/pid-6516926-dt-content-rid-42416762_2/courses/Winter-2018-CSCB20H3-S-LEC01/B20Week2.pdf">B20Week2.pdf</a>
+              </li>
+            </ul>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+    <div class="space">
+    <a onclick="toggle_visibility('Week4');">
+    <div class="title">
+     LAB 4
+    </div>
+    </a>
+    <div class="standard" id="Week4">
+      <div class="center">
+        <ul id="weeklist">
+          <div id="topic">
+            Introduction, Databases background
+          </div>
+          <div>
+            <h3><u>Summary</u></h3>
+            <ul id="summary">
+              <li>Expectations of the course.</li>
+              <li>What is a database?</li>
+              <li>What database technologies and web technologies are covered in this course? </li>
+              <li>SQL and PHP</li>
+              <li>HTML, CSS, JavaScript and JQuery</li>
+              <li>What is a internet?</li>
+              <li>network of computers and routers.</li>
+              <li>What is a protocol?</li>
+              <li>We looked at briefly the http protocol and from a very high level understood the request/response workflow.</li>
+              <li>Relation in Database</li>
+              <li>Tuple, record, data row (all mean the same thing). And a collection of these makes up a Relation. </li>
+              <li>Relation Schema (what columns/relation name)</li>
+              <li>Database Schema</li>
+              <li>Foriegn Key and Primary Key</li>
+            </ul>
+            <h3><u>Lecture Material</u></h3>
+
+            <ul id="lecturelinks">
+              <li>
+                <a href="https://portal.utoronto.ca/bbcswebdav/pid-6516926-dt-content-rid-42416763_2/courses/Winter-2018-CSCB20H3-S-LEC01/B20Week1.pdf">B20Week1.pdf</a>
+              </li>
+              <li>
+                <a href="https://portal.utoronto.ca/bbcswebdav/pid-6516926-dt-content-rid-42416762_2/courses/Winter-2018-CSCB20H3-S-LEC01/B20Week2.pdf">B20Week2.pdf</a>
+              </li>
+            </ul>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+<div class="footer">
+
+     <footer>
+
+     <p1><u>CREATOR</u><br>VIDUR MENEZES  &nbsp;<a class="gold" href="https://github.com/vidurmenezes"><i class="fab fa-github"></i></a>
+     &nbsp;
+     <a class="gold" href="https://www.linkedin.com/in/vidur-menezes-41076397/"><i  class="fab fa-linkedin"></i></a>
+      </p1>
+         <h2>CSCB2O <br><a class="gold" href="http://web.cs.toronto.edu/people/faculty.htm"><p> Faculty Of Computer Science</p></a>
+         </h2>
+
+      <p2><u>CREATOR</u><br><a class="gold" href="https://github.com/alexeicoreiba"><i class="fab fa-github"></i></a> &nbsp;<a class="gold" href="https://www.linkedin.com/in/alexei-coreiba-12621b140/"><i class="fab fa-linkedin"></i></a>&nbsp;ALEXEI COREIBA</p2>
+       </footer>
+
+  </div>
+
+</body>
+
+</html>
