@@ -35,7 +35,7 @@
          //session_register("myusername");
          $_SESSION['login_user'] = $myusername;
          
-         header("location: welcome.php");
+         header("location: index.php");
       }else {
          
          header("location:login.php");
