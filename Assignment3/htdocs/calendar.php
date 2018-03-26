@@ -8,7 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="calendar.css">
   <link rel="stylesheet" type="text/css" href="navbar.css">
-     <link rel="stylesheet" type="text/css" href="footer.css">
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
   <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
@@ -43,20 +42,7 @@
 <div id="calendar">
   <iframe src="https://calendar.google.com/calendar/embed?src=idqh4jr0qptm8vlvvjhqd24agk%40group.calendar.google.com&ctz=America%2FToronto" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 </div>
-
-<div class="footer">
-
-     <footer>
-
-     <p1><u>CREATOR</u><br>VIDUR MENEZES  &nbsp;<a class="gold" href="https://github.com/vidurmenezes"><i class="fab fa-github"></i></a>
-     &nbsp;
-     <a class="gold" href="https://www.linkedin.com/in/vidur-menezes-41076397/"><i  class="fab fa-linkedin"></i></a>
-      </p1>
-         <h2>CSCB2O <br><a class="gold" href="http://web.cs.toronto.edu/people/faculty.htm"><p> Faculty Of Computer Science</p></a>
-         </h2>
-
-      <p2><u>CREATOR</u><br><a class="gold" href="https://github.com/alexeicoreiba"><i class="fab fa-github"></i></a> &nbsp;<a class="gold" href="https://www.linkedin.com/in/alexei-coreiba-12621b140/"><i class="fab fa-linkedin"></i></a>&nbsp;ALEXEI COREIBA</p2>
-       </footer>
-
-  </div>
+<?php
+   include('footer.php');
+?>
 </html>
