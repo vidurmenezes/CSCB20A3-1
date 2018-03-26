@@ -1,3 +1,6 @@
+<?php
+   include('session.php');
+?>
 <!DOCTYPE html>
 <html>
 
@@ -23,16 +26,17 @@
 
 <body>
   <div class="topnav" id="myTopnav">
-    <a href="index.html">Home</a>
-    <a href="news.html">News</a>
-    <a href="calendar.html" class="active">Calendar</a>
+    <a href="index.php">Home</a>
+    <a href="news.php">News</a>
+    <a href="calendar.php" class="active">Calendar</a>
     <a href="https://piazza.com/class/jcpjjp5l4bywd">Piazza</a>
-    <a href="lectures.html">Lectures</a>
-    <a href="labs.html">Labs</a>
-    <a href="assignment.html">Assignments</a>
+    <a href="lectures.php">Lectures</a>
+    <a href="labs.php">Labs</a>
+    <a href="assignment.php">Assignments</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVx2TGzeBfwGCbDxO-3J21F73uBlIlM-dcIW__ZesKLMYBnQ/viewform">Feedback</a>
     <a href="https://markus.utsc.utoronto.ca/cscb20w18/?locale=en">MarkUs</a>
-    <a href="contact.html">Contact</a>
+    <a href="contact.php">Contact</a>
+    <a href="logout.php">Logout</a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
   </div>
 </body>

@@ -1,13 +1,17 @@
+<?php
+   include('session.php');
+?>
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="lectures.css">
-  <link rel="stylesheet" type="text/css" href="navbar.css">
+  <link rel="stylesheet" type="text/css" href="labs.css">
+
+<link rel="stylesheet" type="text/css" href="navbar.css">
  <link rel="stylesheet" type="text/css" href="footer.css">
-  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
-  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
+<link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
+
 </head>
 <script>
   function myFunction() {
@@ -26,7 +30,6 @@
     else
       e.style.display = 'block';
   }
-
     function toggle_visibility_all(id) {
         for (i = 1; i < 100; i++) {
             var text="";
@@ -41,41 +44,45 @@
             }
 
         }
-</script>
 
+</script>
 <body>
   <div class="topnav" id="myTopnav">
-    <a href="index.html">Home</a>
-    <a href="news.html">News</a>
-    <a href="calendar.html">Calendar</a>
+    <a href="index.php">Home</a>
+    <a href="news.php">News</a>
+    <a href="calendar.php">Calendar</a>
     <a href="https://piazza.com/class/jcpjjp5l4bywd">Piazza</a>
-    <a href="lectures.html" class="active">Lectures</a>
-    <a href="labs.html">Labs</a>
-    <a href="assignment.html">Assignments</a>
+    <a href="lectures.php">Lectures</a>
+    <a href="labs.php" class="active">Labs</a>
+    <a href="assignment.php">Assignments</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVx2TGzeBfwGCbDxO-3J21F73uBlIlM-dcIW__ZesKLMYBnQ/viewform">Feedback</a>
     <a href="https://markus.utsc.utoronto.ca/cscb20w18/?locale=en">MarkUs</a>
-    <a href="contact.html">Contact</a>
+    <a href="contact.php">Contact</a>
+    <a href="logout.php">Logout</a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
   </div>
-  <div id="background">
-    <div id="CourseTitle">
-    <div class="myBounceDiv">
-      <h1>LECTURES</h1>
+     <div id="background">
+  <div id="CourseTitle">
+ <div class="myBounceDiv">
+    <h1>LABS</h1>
       <br>
-      <i class="fas fa-graduation-cap fa-5x"></i>
-        </div>
-    </div>
+      <i class="fas fa-flask fa-5x"></i>
+      </div>
   </div>
+</div>
     <a onclick="toggle_visibility_all('Week');">
-     <div class="title">
+ <div class="title">
       EXPAND ALL
     </div>
-    </a>
+        </a>
     <br>
+
   <div class="space">
+    <a onclick="toggle_visibility('Week1');">
     <div class="title">
-      <a onclick="toggle_visibility('Week1');">WEEK 1</a>
+      LAB 1
     </div>
+    </a>
     <div class="standard" id="Week1">
       <div class="center">
         <h3><u>Extra Material</u></h3>
@@ -107,9 +114,9 @@
 
 
   <div class="space">
-<a onclick="toggle_visibility('Week2');">
+     <a onclick="toggle_visibility('Week2');">
     <div class="title">
-      WEEK 2
+        LAB 2
     </div>
     </a>
     <div class="standard" id="Week2">
@@ -155,7 +162,7 @@
     <div class="space">
     <a onclick="toggle_visibility('Week3');">
     <div class="title">
-      WEEK 3
+    LAB 3
     </div>
     </a>
     <div class="standard" id="Week3">
@@ -198,9 +205,9 @@
     </div>
   </div>
     <div class="space">
-     <a onclick="toggle_visibility('Week4');">
+    <a onclick="toggle_visibility('Week4');">
     <div class="title">
-     WEEK 4
+     LAB 4
     </div>
     </a>
     <div class="standard" id="Week4">
