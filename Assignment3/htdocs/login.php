@@ -1,4 +1,7 @@
-<?php
+ 
+<?php 
+   ini_set('display_errors',0);
+
    include("config.php");
    session_start();
    
@@ -8,25 +11,24 @@
       $myusername = mysqli_real_escape_string($db,$_POST['username']);
       $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
       $usertype = mysqli_real_escape_string($db,$_POST['types']);  
-      echo $myusername."<br>";
-      echo $mypassword."<br>";
-      echo $usertype."<br>";
+      $studentDb = "student";
+      $taDb = "tas";
+      $instructorDb = "instructors";
+      //echo $myusername."<br>";
+      //echo $mypassword."<br>";
+      //echo $usertype."<br>";
       if($usertype == "instructor"){
-      $sql = "SELECT * FROM instructors WHERE email = '$myusername' and password = '$mypassword';";
+      $sql = "SELECT * FROM ".$instructorDb." WHERE email = '$myusername' and password = '$mypassword';";
       }
       else if($usertype == "student"){
-         $sql = "SELECT * FROM students WHERE email = '$myusername' and password = '$mypassword';"; 
+         $sql = "SELECT * FROM".$studentDb." WHERE email = '$myusername' and password = '$mypassword';"; 
       }
       else{
-          $sql = "SELECT * FROM tas WHERE email = '$myusername' and password = '$mypassword';";
+          $sql = "SELECT * FROM ".$taDb." WHERE email = '$myusername' and password = '$mypassword';";
       }
-      echo $sql;
+     echo $sql;
       $result = mysqli_query($db,$sql);
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-       if (!$row) {
-             printf("Error this is from here: %s\n", mysqli_error($result));
-      exit();
-       }
      // $active = $row['active'];
       
       $count = mysqli_num_rows($result);
@@ -34,11 +36,10 @@
       if($count == 1) {
          //session_register("myusername");
          $_SESSION['login_user'] = $myusername;
-         
-         header("location: index.php");
+         	header("location: index.php");
       }else {
-         
-         header("location:login.php");
+         header("location:index.php");
+          
       }
        
    }
@@ -65,6 +66,8 @@
       }
     }
   </script>
+
+
 </head>
 
 <body>
