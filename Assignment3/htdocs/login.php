@@ -1,4 +1,11 @@
- 
+ <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="login.css">
+  <link rel="stylesheet" type="text/css" href="navbar.css">
+<link rel="stylesheet" type="text/css" href="footer.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
 <?php 
    ini_set('display_errors',0);
 
@@ -11,22 +18,21 @@
       $myusername = mysqli_real_escape_string($db,$_POST['username']);
       $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
       $usertype = mysqli_real_escape_string($db,$_POST['types']);  
-      $studentDb = "student";
+      $studentDb = "students";
       $taDb = "tas";
       $instructorDb = "instructors";
       //echo $myusername."<br>";
       //echo $mypassword."<br>";
       //echo $usertype."<br>";
-      if($usertype == "instructor"){
+      if($usertype == "instructors"){
       $sql = "SELECT * FROM ".$instructorDb." WHERE email = '$myusername' and password = '$mypassword';";
       }
-      else if($usertype == "student"){
+      else if($usertype == "students"){
          $sql = "SELECT * FROM".$studentDb." WHERE email = '$myusername' and password = '$mypassword';"; 
       }
       else{
           $sql = "SELECT * FROM ".$taDb." WHERE email = '$myusername' and password = '$mypassword';";
       }
-     echo $sql;
       $result = mysqli_query($db,$sql);
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
      // $active = $row['active'];
@@ -36,10 +42,16 @@
       if($count == 1) {
          //session_register("myusername");
          $_SESSION['login_user'] = $myusername;
-         	header("location: index.php");
+         $_SESSION['usertype'] = $usertype;
+         header("location: index.php");
       }else {
-         header("location:index.php");
-          
+         // header("location:index.php");
+          ?>
+         <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <strong>Wrong</strong> Password or username
+        </div>
+      <?php
       }
        
    }
@@ -47,14 +59,7 @@
 
 <html>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="contact.css">
-  <link rel="stylesheet" type="text/css" href="navbar.css">
-<link rel="stylesheet" type="text/css" href="footer.css">
-  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
-  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
+
 
   <script>
     function myFunction() {
@@ -91,9 +96,9 @@
                   <label>UserName  :</label><input type = "text" name = "username" class = "box"/><br /><br />
                   <label>Password  :</label><input type = "password" name = "password" class = "box" /><br/><br />
                    <select name="types">
-                    <option value="instructor">instructor</option>
-                    <option value="student">student</option>
-                    <option value="ta">ta</option>
+                    <option value="instructors">instructor</option>
+                    <option value="students">student</option>
+                    <option value="tas">ta</option>
                    </select>
                   <input type = "submit" value = " Submit "/><br />
                </form>
