@@ -1,5 +1,9 @@
 <?php
    include('session.php');
+if($_SESSION['firstname'] == ""){
+    session_destroy();
+    header("location:login.php");
+}
 ?>
 <!DOCTYPE html>
 <html>
