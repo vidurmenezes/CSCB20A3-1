@@ -1,4 +1,5 @@
- <head>
+<html>
+<head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#181818e8" />
   <link rel="stylesheet" type="text/css" href="login.css">
@@ -7,6 +8,25 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
   <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
 </head>
+<script>
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+  </script>
+    <script>
+function validateForm() {
+    var x = document.forms["myForm"]["fname"].value;
+    if (x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+}
+</script>
 <?php 
    ini_set('display_errors',0);
 
@@ -41,41 +61,35 @@
          
          header("location: index.php");
       }else {
+          $_SESSION['usrpass'] = 'true';
          // header("location:index.php");
-          ?>
-         <div class="alert">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-        <strong>Wrong</strong> Password or username
-        </div>
-      <?php
       }
        
    }
 ?>
+<?php
+          $errorusr = $_SESSION['usrpass'];
+          $errorreg = $_SESSION['register'];
+          //echo $erroreg;
+            if($errorusr){
+                echo "<div class='alert'>";
+                echo "<span class='closebtn' onclick=\"this.parentElement.style.display='none';\">&times;</span>";
+                echo "<strong>Wrong</strong> Password or username";
+                echo "</div>";
+            }
+            else if($errorreg){
+                echo "<div class='alert'>";
+                echo "<span class='closebtn' onclick=\"this.parentElement.style.display='none';\">&times;</span>";
+                echo "<strong>Account is already created</strong>";
+                echo "</div>";
+            }
+          ?>
 
-<html>
 
 
 
-  <script>
-    function myFunction() {
-      var x = document.getElementById("myTopnav");
-      if (x.className === "topnav") {
-        x.className += " responsive";
-      } else {
-        x.className = "topnav";
-      }
-    }
-  </script>
-    <script>
-function validateForm() {
-    var x = document.forms["myForm"]["fname"].value;
-    if (x == "") {
-        alert("Name must be filled out");
-        return false;
-    }
-}
-</script>
+
+  
 
 
 <body>

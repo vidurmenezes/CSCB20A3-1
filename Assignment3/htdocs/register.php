@@ -21,27 +21,31 @@
         
    $studentDb = "students";
    $taDb = "tas";
-   $instructorDb = "instructors";    
+   $instructorDb = "instructors";
    //INSERT INTO instructors VALUES ("firstname","lastname","email","password");
     
     $sql = "INSERT INTO ".$usertype." VALUES ("."'".$firstname."','".$lastname."','".$myusername."','".$mypassword."')";
-
+    
+    /*if($usertype == "students"){
+        $marks = "marks"
+        //$student = "INSERT INTO ".$marks." VALUES ("."'".$firstname."','".$lastname."','".$myusername."','".$mypassword."')";
+        //$studres = mysqli_query($db,$student);
+        if(!studres){
+            header("location: login.php");
+        }
+        
+    }*/
       $result = mysqli_query($db,$sql);
-      
       if($result) {
          //session_register("myusername");
+         $_SESSION['register'] = 'false';
          $_SESSION['login_user'] = $myusername;
-         $_SESSION['usertype'] = $usertype;
-         
+         $_SESSION['usertype'] = $usertype;         
          header("location: index.php");
       }else {
-         //header("location:login.php");
-          ?>
-         <div class="alert">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-        <strong>USER</strong> is already registered
-        </div>
-      <?php
+          $_SESSION['register'] = 'true';
+          header("location:login.php");
+          exit();
       }
       
    }
