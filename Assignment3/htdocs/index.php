@@ -41,7 +41,8 @@
   <div id="background">
     <div id="CourseTitle">
        <div class="myBounceDiv">
-      <h1>Welcome To CSCB20 <?php echo $_SESSION['login_user']; ?></h1>
+      <h1>Welcome To CSCB20 </h1>
+           <h2 style="color:white;"><?php echo $_SESSION['firstname']; ?></h2>
          <i class="fas fa-laptop fa-4x"></i>
         </div>
     </div>

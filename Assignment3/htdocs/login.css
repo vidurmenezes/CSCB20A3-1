@@ -4,7 +4,7 @@ body {
 }
 
 #background {
-  background-image: url(./img/background4.jpg);
+  background-image: url(./img/background5.jpg);
   overflow: auto;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -74,7 +74,7 @@ a {
 @media screen and (max-width: 860px) {
 
   #background {
-    background-image: url(./img/background5.jpg);
+    background-image: url(./img/background4.jpg);
   }
   #CourseTitle {
     color: white;

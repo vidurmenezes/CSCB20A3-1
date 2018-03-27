@@ -6,6 +6,7 @@
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
   <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
+</head>
 <?php 
    ini_set('display_errors',0);
 
@@ -15,8 +16,9 @@
    if($_SERVER["REQUEST_METHOD"] == "POST") {
       // username and password sent from form 
       
-      $myusername = mysqli_real_escape_string($db,$_POST['username']);
+      $myusername = mysqli_real_escape_string($db,$_POST['email']);
       $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
+      
       $usertype = mysqli_real_escape_string($db,$_POST['types']);  
       $studentDb = "students";
       $taDb = "tas";
@@ -24,15 +26,8 @@
       //echo $myusername."<br>";
       //echo $mypassword."<br>";
       //echo $usertype."<br>";
-      if($usertype == "instructors"){
-      $sql = "SELECT * FROM ".$instructorDb." WHERE email = '$myusername' and password = '$mypassword';";
-      }
-      else if($usertype == "students"){
-         $sql = "SELECT * FROM".$studentDb." WHERE email = '$myusername' and password = '$mypassword';"; 
-      }
-      else{
-          $sql = "SELECT * FROM ".$taDb." WHERE email = '$myusername' and password = '$mypassword';";
-      }
+       $sql = "SELECT * FROM ".$usertype." WHERE email = '$myusername' and password = '$mypassword';";
+      
       $result = mysqli_query($db,$sql);
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
      // $active = $row['active'];
@@ -43,6 +38,7 @@
          //session_register("myusername");
          $_SESSION['login_user'] = $myusername;
          $_SESSION['usertype'] = $usertype;
+         
          header("location: index.php");
       }else {
          // header("location:index.php");
@@ -71,9 +67,16 @@
       }
     }
   </script>
+    <script>
+function validateForm() {
+    var x = document.forms["myForm"]["fname"].value;
+    if (x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+}
+</script>
 
-
-</head>
 
 <body>
   
@@ -92,15 +95,17 @@
           <h4><b>LOGIN: </b></h4>
           <div class="title">
        
-               <form action = "" method = "post">
-                  <label>UserName  :</label><input type = "text" name = "username" class = "box"/><br /><br />
-                  <label>Password  :</label><input type = "password" name = "password" class = "box" /><br/><br />
-                   <select name="types">
+               <form action = "" method = "post" onsubmit="return validateForm()">
+                  <label>Email  :</label><input type = "email" name = "email" class = "box" required /><br /><br />
+                  <label>Password  :</label><input type = "password" name = "password" class = "box"required /><br/><br />
+                   <select name="types" required>
                     <option value="instructors">instructor</option>
-                    <option value="students">student</option>
+                    <option value="students">student
+                           <?php $showDivFlag = true;  ?>
+                           </option>
                     <option value="tas">ta</option>
                    </select>
-                  <input type = "submit" value = " Submit "/><br />
+                  <input type = "submit" value = " Submit " required/><br />
                </form>
           </div>
 
@@ -113,15 +118,23 @@
 
         <div class="container" >
 
-          <h4><b>TA</b></h4>
+          <h4><b>REGISTER: </b></h4>
           <div class="title">
-            <p> <b>Email:</b> <a href="mailto:bretscher@utsc.utoronto.ca">TA@mail.utoronto.ca</a></p>
-            <p> <b>Tutorial Room:</b> IC493</p>
-            <p> <b>Tutorial</b><br> 11:00-12:00 WENESDAY <br>4:00-6:00 FRIDAY</p>
-              <p> <b>Office Hours:</b><br> 11:00-12:00 WENESDAY <br>
-             4:00-6:00 FRIDAY
-            <br>
-             1:00-2:00 THURSDAY </p>
+           <form action = "register.php" method = "post" onsubmit="return validateForm()">
+                   <label>First Name  :</label><input type = "text" name = "firstname" class = "box" required/><br /><br />
+                  <label>Last Name  :</label><input type = "text" name = "lastname" class = "box"required /><br/><br />
+                  <label>Email  :</label><input type = "text" name = "email" class = "box" required/><br /><br />
+                  <label>Password  :</label><input type = "password" name = "password" class = "box" required/><br/><br />
+               
+                   <select name="types">
+                    <option value="instructors">instructor</option>
+                    <option value="students">student
+                           <?php $showDivFlag = true;  ?>
+                           </option>
+                    <option value="tas">ta</option>
+                   </select>
+                  <input type = "submit" value = " Submit "/><br />
+               </form>
           </div>
       </div>
     </div>
