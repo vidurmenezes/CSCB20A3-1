@@ -26,12 +26,13 @@ DROP TABLE IF EXISTS `feedback`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `feedback` (
   `feedbackid` int(11) NOT NULL AUTO_INCREMENT,
-  `instructoremail` varchar(255) NOT NULL,
-  `feedback` varchar(255) NOT NULL,
+  `instructorid` varchar(255) NOT NULL,
+  `question1` varchar(255) NOT NULL,
+  `question2` varchar(255) NOT NULL,
+  `question3` varchar(255) NOT NULL,
+  `question4` varchar(255) NOT NULL,
   PRIMARY KEY (`feedbackid`),
-  UNIQUE KEY `feedbackid_UNIQUE` (`feedbackid`),
-  KEY `email_idx` (`instructoremail`),
-  CONSTRAINT `email` FOREIGN KEY (`instructoremail`) REFERENCES `instructors` (`email`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  UNIQUE KEY `feedbackid_UNIQUE` (`feedbackid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,8 +42,32 @@ CREATE TABLE `feedback` (
 
 LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
-INSERT INTO `feedback` VALUES (1,'instructor@mail.utoronto.ca','you are bad'),(2,'instructora@mail.utoronto.ca','you are good'),(3,'instructorb@mail.utoronto.ca','you are meh');
+INSERT INTO `feedback` VALUES (1,'instid','q1 answer','q2 answer','q3 answer','q4 answer'),(2,'instaid','q1 answer','q2 answer','q3 answer','q4 answer'),(3,'instbid','q1 answer','q2 answer','q3 answer','q4 answer');
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `feedbackquestions`
+--
+
+DROP TABLE IF EXISTS `feedbackquestions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `feedbackquestions` (
+  `QuestionNumber` int(11) NOT NULL AUTO_INCREMENT,
+  `Question` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`QuestionNumber`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `feedbackquestions`
+--
+
+LOCK TABLES `feedbackquestions` WRITE;
+/*!40000 ALTER TABLE `feedbackquestions` DISABLE KEYS */;
+INSERT INTO `feedbackquestions` VALUES (1,'What do you like about the instructor teaching?'),(2,'What do you recommend the instructor to do to improve their teaching?'),(3,'What do you like about the labs?'),(4,'What do you recommend the lab instructors to do to improve their lab teaching?');
+/*!40000 ALTER TABLE `feedbackquestions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -57,7 +82,10 @@ CREATE TABLE `instructors` (
   `lastname` varchar(45) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`email`)
+  `utorid` varchar(45) NOT NULL,
+  PRIMARY KEY (`utorid`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  UNIQUE KEY `utorid_UNIQUE` (`utorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -67,7 +95,7 @@ CREATE TABLE `instructors` (
 
 LOCK TABLES `instructors` WRITE;
 /*!40000 ALTER TABLE `instructors` DISABLE KEYS */;
-INSERT INTO `instructors` VALUES ('instructorfname','instructorlname','instructor@mail.utoronto.ca','instructor'),('instructorfa','instructorla','instructora@mail.utoronto.ca','instructora'),('instructorfb','instructorlb','instructorb@mail.utoronto.ca','instructorb');
+INSERT INTO `instructors` VALUES ('instructorfa','instructorla','instructora@mail.utoronto.ca','instructora','instaid'),('instructorfb','instructorlb','instructorb@mail.utoronto.ca','instructorb','instbid'),('instructorfname','instructorlname','instructor@mail.utoronto.ca','instructor','instid');
 /*!40000 ALTER TABLE `instructors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,8 +194,10 @@ CREATE TABLE `tas` (
   `lastname` varchar(45) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`email`),
-  UNIQUE KEY `email_UNIQUE` (`email`)
+  `utorid` varchar(45) NOT NULL,
+  PRIMARY KEY (`utorid`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  UNIQUE KEY `utorid_UNIQUE` (`utorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -177,7 +207,7 @@ CREATE TABLE `tas` (
 
 LOCK TABLES `tas` WRITE;
 /*!40000 ALTER TABLE `tas` DISABLE KEYS */;
-INSERT INTO `tas` VALUES ('tafname','talname','ta@mail.utoronto.ca','ta'),('tafa','tala','taa@mail.utoronto.ca','taa'),('tafb','talb','tab@mail.utoronto.ca','tab');
+INSERT INTO `tas` VALUES ('tafa','tala','taa@mail.utoronto.ca','taa','taaid'),('tafb','talb','tab@mail.utoronto.ca','tab','tabid'),('tafname','talname','ta@mail.utoronto.ca','ta','taid');
 /*!40000 ALTER TABLE `tas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -190,4 +220,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-25 23:57:20
+-- Dump completed on 2018-03-27 14:21:15

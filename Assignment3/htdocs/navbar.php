@@ -1,3 +1,6 @@
+<?php
+   include('session.php');
+?>
 <!DOCTYPE html>
 <html>
 
@@ -28,7 +31,7 @@
       if ($_SESSION['usertype'] == "students") {
       echo "<a href=\"viewmarks.php\">View Marks</a>";
       echo "<a href=\"sendfeedback.php\">Send Feedback</a>";
-      } elseif ($_SESSION['usertype'] == "instructors" || $_SESSION['usertype'] == "tas") {
+      } else {
         echo "<a href=\"viewremarks.php\">View Remarks</a>";
         echo "<a href=\"changemarks.php\">Change Marks</a>";
         if ($_SESSION['usertype'] == "instructors") {
