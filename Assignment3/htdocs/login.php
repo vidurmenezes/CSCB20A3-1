@@ -1,3 +1,4 @@
+
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +37,7 @@ function validateForm() {
    if($_SERVER["REQUEST_METHOD"] == "POST") {
       // username and password sent from form 
       
-      $myusername = mysqli_real_escape_string($db,$_POST['email']);
+      $myusername = mysqli_real_escape_string($db,$_POST['utorid']);
       $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
       
       $usertype = mysqli_real_escape_string($db,$_POST['types']);  
@@ -46,7 +47,7 @@ function validateForm() {
       //echo $myusername."<br>";
       //echo $mypassword."<br>";
       //echo $usertype."<br>";
-       $sql = "SELECT * FROM ".$usertype." WHERE email = '$myusername' and password = '$mypassword';";
+       $sql = "SELECT * FROM ".$usertype." WHERE utorid = '$myusername' and password = '$mypassword';";
       
       $result = mysqli_query($db,$sql);
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
@@ -60,9 +61,10 @@ function validateForm() {
          $_SESSION['usertype'] = $usertype;
          
          header("location: index.php");
+
       }else {
           $_SESSION['usrpass'] = 'true';
-         // header("location:index.php");
+          header("location:index.php");
       }
        
    }
@@ -110,7 +112,7 @@ function validateForm() {
           <div class="title">
        
                <form action = "" method = "post" onsubmit="return validateForm()">
-                  <label>Email  :</label><input type = "email" name = "email" class = "box" required /><br /><br />
+                  <label>UtorID  :</label><input type = "text" name = "utorid" class = "box" required /><br /><br />
                   <label>Password  :</label><input type = "password" name = "password" class = "box"required /><br/><br />
                    <select name="types" required>
                     <option value="instructors">instructor</option>
@@ -139,7 +141,7 @@ function validateForm() {
                   <label>Last Name  :</label><input type = "text" name = "lastname" class = "box"required /><br/><br />
                   <label>Email  :</label><input type = "text" name = "email" class = "box" required/><br /><br />
                   <label>Password  :</label><input type = "password" name = "password" class = "box" required/><br/><br />
-               
+                  <label>UtorId  :</label><input type = "text" name = "utorid" class = "box" required/><br/><br />
                    <select name="types">
                     <option value="instructors">instructor</option>
                     <option value="students">student

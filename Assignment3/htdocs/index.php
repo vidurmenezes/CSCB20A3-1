@@ -1,9 +1,6 @@
 <?php
-include('session.php');
-if($_SESSION['firstname'] == ""){
-session_destroy();
-header("location:login.php");
-}
+include("config.php");
+session_start();
 ?>
 <!DOCTYPE html>
 <html>

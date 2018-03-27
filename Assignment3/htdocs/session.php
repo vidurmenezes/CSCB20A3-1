@@ -3,7 +3,7 @@
    session_start();
    $user_check = $_SESSION['login_user'];
    $usertype = $_SESSION['usertype'];
-   $ses_sql = mysqli_query($db,"select * from ".$usertype." where email = '$user_check'");
+   $ses_sql = mysqli_query($db,"select * from ".$usertype." where utorid = '$user_check'");
    $row = mysqli_fetch_array($ses_sql,MYSQLI_ASSOC);
    $email = $row['email'];
    $fname = $row['firstname'];
