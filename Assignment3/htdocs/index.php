@@ -1,6 +1,7 @@
 <?php
-include("config.php");
-session_start();
+ini_set('display_errors',0);
+include("session.php");
+if(session_id()==''){session_start();}
 ?>
 <!DOCTYPE html>
 <html>
