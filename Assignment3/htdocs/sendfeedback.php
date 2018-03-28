@@ -15,7 +15,7 @@ include('session.php');
   <?php
   include('navbar.php');
 // define variables and set to empty values
-  $answer1 = $answer2 = $answer3 = $answer4 = "";
+  $answer1 = $answer2 = $answer3 = $answer4 = $instructor = "";
   $answer1Err = $answer2Err = $answer3Err = $answer4Err = "";
   $column = array();
   $sql = "SELECT Question FROM feedbackquestions";
@@ -29,6 +29,7 @@ include('session.php');
   }
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $instructor = $_POST["instructors"];
     if (empty($_POST["answer1"])) {
       $answer1Err = "Answer is required";
     } else {
@@ -80,25 +81,28 @@ include('session.php');
       </div>
     </div>
   </div>
-  <div id="instchoice" class="dropdown">
-    <h2>Choose The Target Instructor</h2>
-    <select name="instructors">
-      <?php
-      $sql = "SELECT firstname, lastname, utorid FROM instructors";
-      $result = $db->query($sql);
-      if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-          echo "<option value=\"".$row['utorid']."\">".$row['firstname']." ".$row['lastname']."</option>";
-        }
-      } else {
-        echo "<option>0 results</option>";
-      }
-      ?>
-    </select>
-  </div>
+  
   <div class="mainsection">
-    <p><span class="error">* required field.</span></p>
+
     <form method="post" action="">
+      <div id="instchoice" class="dropdown">
+        <h2>Choose The Target Instructor</h2>
+        <select name="instructors">
+          <?php
+          $sql = "SELECT firstname, lastname, utorid FROM instructors";
+          $result = $db->query($sql);
+          if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+              $fullname = $row['firstname']." ".$row['lastname'];
+              echo "<option value=\"".$row['utorid']."\">".$fullname."</option>";
+            }
+          } else {
+            echo "<option>0 results</option>";
+          }
+          ?>
+        </select>
+      </div>
+      <p><span class="error">* required field.</span></p>
       <?php echo $column[0]. "  <span class=\"error\">*".$answer1Err."</span><br>";?>
       <textarea name="answer1" rows="5"><?php echo $answer1;?></textarea>
       <br>
@@ -117,15 +121,19 @@ include('session.php');
       <input id="submit" type="submit" name="submit" value="Submit">
     </form>
     <?php
-    echo "<script type='text/javascript'>alert('$answer1');</script>";
-    echo $answer1;
-    echo "<br>";
-    echo $answer2;
-    echo "<br>";
-    echo $answer3;
-    echo "<br>";
-    echo $answer4;
-    echo "<br>";
+    if(isset($_POST['submit'])){
+      if ($answer1Err == '' && $answer2Err == '' && $answer3Err == '' && $answer4Err == '') {
+        echo $answer1;
+        echo "<br>";
+        echo $answer2;
+        echo "<br>";
+        echo $answer3;
+        echo "<br>";
+        echo $answer4;
+        $message = "Your feedback, ".$answer1.", ".$answer2.", ".$answer3.", ".$answer4." was successfully submitted to ".$instructor.".";
+        echo "<script type='text/javascript'>alert('$message'); location=\"sendfeedback.php\"</script>";
+      }
+    }
     ?>
   </div>
   <?php
