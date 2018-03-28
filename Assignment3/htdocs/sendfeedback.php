@@ -88,25 +88,43 @@ include('session.php');
   <div class="mainsection">
     <p><span class="error">* required field.</span></p>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-    <?php
-    $sql = "SELECT Question FROM feedbackquestions";
-    $result = $db->query($sql);
-    if ($result->num_rows > 0) {
-      while ($row = $result->fetch_assoc()) {
-        echo $row['Question'];
-        echo "<br>";
-        echo "<input class=\"inputbox\" type=\"text\" name=\"answer1\" value=\"".$answer1."\">";
-        echo "<br>";
+      <?php
+      $column = array();
+      $sql = "SELECT Question FROM feedbackquestions";
+      $result = $db->query($sql);
+      if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+          $column[] = $row['Question'];
+        }
+      } else {
+        echo "0 results";
       }
-    } else {
-      echo "0 results";
-    }
+      echo $column[0];
+      echo "  "."<span class=\"error\">*".$answer1Err."</span>";
+      echo "<br>";
+      echo "<textarea name=\"comment\" rows=\"5\">".$answer1."</textarea>";
+      echo "<br>";
+      echo $column[1];
+      echo "  "."<span class=\"error\">*".$answer2Err."</span>";
+      echo "<br>";
+      echo "<textarea name=\"comment\" rows=\"5\">".$answer2."</textarea>";
+      echo "<br>";
+      echo $column[2];
+      echo "  "."<span class=\"error\">*".$answer3Err."</span>";
+      echo "<br>";
+      echo "<textarea name=\"comment\" rows=\"5\">".$answer3."</textarea>";
+      echo "<br>";
+      echo $column[3];
+      echo "  "."<span class=\"error\">*".$answer4Err."</span>";
+      echo "<br>";
+      echo "<textarea name=\"comment\" rows=\"5\">".$answer4."</textarea>";
+      echo "<br>";
+      ?>
+      <input id="submit" type="submit" name="submit" value="Submit">
+    </div>
+    <?php
+    include('footer.php');
     ?>
-    <input type="submit" name="submit" value="Submit">
-  </div>
-  <?php
-  include('footer.php');
-  ?>
-</body>
+  </body>
 
-</html>
+  </html>

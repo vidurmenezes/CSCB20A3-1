@@ -23,7 +23,7 @@ h4{
   text-align: center;
   color: black;
   margin: 30px;
-    height: 500px;
+    height: 700px;
   margin-left: 10%;
   margin-right: 10%;
   border: 1px solid black;
@@ -42,6 +42,10 @@ option {
 
 .error {color: #FF0000;}
 
-.inputbox {
-  width:200px;
+textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  width: 80%;
 }
