@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors',0);
 include("session.php");
-//session_start();
+if(session_id()==''){session_start();}
 ?>
 <!DOCTYPE html>
 <html>

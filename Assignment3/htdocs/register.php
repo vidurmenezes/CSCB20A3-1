@@ -2,7 +2,7 @@
    ini_set('display_errors',0);
 
    include("config.php");
-   session_start();
+   if(session_id()==''){session_start();}
    if($_SERVER["REQUEST_METHOD"] == "POST") {
    $firstname = mysqli_real_escape_string($db,$_POST['firstname']); 
    $lastname = mysqli_real_escape_string($db,$_POST['lastname']);  
@@ -32,8 +32,9 @@
       if($result) {
          //session_register("myusername");
          $_SESSION['register'] = 'false';
-         $_SESSION['login_user'] = $myusername;
-         $_SESSION['usertype'] = $usertype;         
+         $_SESSION['login_user'] = $utorid;
+         $_SESSION['usertype'] = $usertype;
+        //  session_destroy(); 
          header("location: index.php");
       }else {
           $_SESSION['register'] = 'true';
