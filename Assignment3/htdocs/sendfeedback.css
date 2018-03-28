@@ -15,9 +15,7 @@ h4{
   font-size: 20px;
   background-color: transparent;
   text-align: center;
-  padding: 10px;
-  width: 50%;
-  margin-left: 25%;
+  width: 100%;
   margin-top: 150px;
 }
 
@@ -25,7 +23,7 @@ h4{
   text-align: center;
   color: black;
   margin: 30px;
-    height: 200px;
+    height: 500px;
   margin-left: 10%;
   margin-right: 10%;
   border: 1px solid black;
@@ -40,4 +38,10 @@ h4{
 
 option {
   text-align: center;
+}
+
+.error {color: #FF0000;}
+
+.inputbox {
+  width:200px;
 }

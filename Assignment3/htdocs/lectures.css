@@ -76,7 +76,7 @@ h2 {
   color: black;
 }
 
-@media screen and (max-width: 840px) {
+/*@media screen and (max-width: 840px) {
   .active {
     font-weight: bold;
     color: white;
@@ -86,4 +86,4 @@ h2 {
   .subtitle {
     text-align: center;
   }
-}
+}*/
