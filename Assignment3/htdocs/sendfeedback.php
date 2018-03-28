@@ -17,6 +17,17 @@ include('session.php');
 // define variables and set to empty values
   $answer1 = $answer2 = $answer3 = $answer4 = "";
   $answer1Err = $answer2Err = $answer3Err = $answer4Err = "";
+  $column = array();
+  $sql = "SELECT Question FROM feedbackquestions";
+  $result = $db->query($sql);
+  if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+      $column[] = $row['Question'];
+    }
+  } else {
+    echo "0 results";
+  }
+
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["answer1"])) {
       $answer1Err = "Answer is required";
@@ -50,14 +61,14 @@ include('session.php');
         $answer4Err = "Answer cannot exceed 255 characters"; 
       }
     }
-
-    function test_input($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
-    }
   }
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+
   ?>
 
   <div id="background">
@@ -87,44 +98,39 @@ include('session.php');
   </div>
   <div class="mainsection">
     <p><span class="error">* required field.</span></p>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-      <?php
-      $column = array();
-      $sql = "SELECT Question FROM feedbackquestions";
-      $result = $db->query($sql);
-      if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-          $column[] = $row['Question'];
-        }
-      } else {
-        echo "0 results";
-      }
-      echo $column[0];
-      echo "  "."<span class=\"error\">*".$answer1Err."</span>";
-      echo "<br>";
-      echo "<textarea name=\"comment\" rows=\"5\">".$answer1."</textarea>";
-      echo "<br>";
-      echo $column[1];
-      echo "  "."<span class=\"error\">*".$answer2Err."</span>";
-      echo "<br>";
-      echo "<textarea name=\"comment\" rows=\"5\">".$answer2."</textarea>";
-      echo "<br>";
-      echo $column[2];
-      echo "  "."<span class=\"error\">*".$answer3Err."</span>";
-      echo "<br>";
-      echo "<textarea name=\"comment\" rows=\"5\">".$answer3."</textarea>";
-      echo "<br>";
-      echo $column[3];
-      echo "  "."<span class=\"error\">*".$answer4Err."</span>";
-      echo "<br>";
-      echo "<textarea name=\"comment\" rows=\"5\">".$answer4."</textarea>";
-      echo "<br>";
-      ?>
+    <form method="post" action="">
+      <?php echo $column[0]. "  <span class=\"error\">*".$answer1Err."</span><br>";?>
+      <textarea name="answer1" rows="5"><?php echo $answer1;?></textarea>
+      <br>
+      <br>
+      <?php echo $column[1]. "  <span class=\"error\">*".$answer2Err."</span><br>";?>
+      <textarea name="answer2" rows="5"><?php echo $answer2;?></textarea>
+      <br>
+      <br>
+      <?php echo $column[2]. "  <span class=\"error\">*".$answer3Err."</span><br>";?>
+      <textarea name="answer3" rows="5"><?php echo $answer3;?></textarea>
+      <br>
+      <br>
+      <?php echo $column[3]. "  <span class=\"error\">*".$answer4Err."</span><br>";?>
+      <textarea name="answer4" rows="5"><?php echo $answer4;?></textarea>
+      <br>
       <input id="submit" type="submit" name="submit" value="Submit">
-    </div>
+    </form>
     <?php
-    include('footer.php');
+    echo "<script type='text/javascript'>alert('$answer1');</script>";
+    echo $answer1;
+    echo "<br>";
+    echo $answer2;
+    echo "<br>";
+    echo $answer3;
+    echo "<br>";
+    echo $answer4;
+    echo "<br>";
     ?>
-  </body>
+  </div>
+  <?php
+  include('footer.php');
+  ?>
+</body>
 
-  </html>
+</html>
