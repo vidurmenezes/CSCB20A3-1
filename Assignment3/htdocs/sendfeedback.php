@@ -14,7 +14,16 @@ include('session.php');
 <body>
   <?php
   include('navbar.php');
-// define variables and set to empty values
+  // test feedback table
+  // $sql = "SELECT instructorid, question1, question2, question3, question4 FROM feedback";
+  // $result = $db->query($sql);
+  // if ($result->num_rows > 0) {
+  //   while ($row = $result->fetch_assoc()) {
+  //     $print = $row['instructorid'].": ".$row['question1'].", ".$row['question2'].", ".$row['question3'].", ".$row['question4']."<br>";
+  //     echo $print;
+  //   }
+  // }
+  // define variables and set to empty values
   $answer1 = $answer2 = $answer3 = $answer4 = $instructor = "";
   $answer1Err = $answer2Err = $answer3Err = $answer4Err = "";
   $column = array();
@@ -81,7 +90,7 @@ include('session.php');
       </div>
     </div>
   </div>
-  
+
   <div class="mainsection">
 
     <form method="post" action="">
@@ -123,15 +132,14 @@ include('session.php');
     <?php
     if(isset($_POST['submit'])){
       if ($answer1Err == '' && $answer2Err == '' && $answer3Err == '' && $answer4Err == '') {
-        echo $answer1;
-        echo "<br>";
-        echo $answer2;
-        echo "<br>";
-        echo $answer3;
-        echo "<br>";
-        echo $answer4;
-        $message = "Your feedback, ".$answer1.", ".$answer2.", ".$answer3.", ".$answer4." was successfully submitted to ".$instructor.".";
-        echo "<script type='text/javascript'>alert('$message'); location=\"sendfeedback.php\"</script>";
+        $sql = "INSERT INTO feedback (instructorid, question1, question2, question3, question4) VALUES ('$instructor', '$answer1', '$answer2', '$answer3', '$answer4')";
+        if ($db->query($sql) == TRUE) {
+          $message = "Thank you, your feedback, was successfully submitted";
+          echo "<script type='text/javascript'>alert('$message'); location=\"sendfeedback.php\"</script>";
+        } else {
+           $message = "Error: ".$sql."<br>".$db->error;
+           echo "<script type='text/javascript'>alert('$message');</script>";
+        }
       }
     }
     ?>
