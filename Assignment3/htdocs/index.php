@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors',0);
+//ini_set('display_errors',0);
 include("session.php");
 if(session_id()==''){session_start();}
 ?>

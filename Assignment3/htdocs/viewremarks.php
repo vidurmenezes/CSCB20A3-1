@@ -1,5 +1,8 @@
 <?php
    include('session.php');
+   if($_SESSION['students']==true){
+       header("location:index.php");
+   }
 ?>
 <!DOCTYPE html>
 <html>

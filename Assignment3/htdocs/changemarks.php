@@ -1,5 +1,8 @@
 <?php
    include('session.php');
+   if($_SESSION['instructors']==false){
+       header("location:index.php");
+   }
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,8 +29,7 @@
   <div class="mainsection">
     <h4>January 2, 2018</h4>
     <p>
-      Sitting mistake towards his few country ask. You delighted two rapturous six depending objection happiness something the. Off nay impossible dispatched partiality unaffected. Norland adapted put ham cordial. Ladies talked may shy basket narrow see. Him
-      she distrusts questions sportsmen. Tolerably pretended neglected on my earnestly by. Sex scale sir style truth ought.
+      SHIT
     </p>
   </div>
   <div class="mainsection">
