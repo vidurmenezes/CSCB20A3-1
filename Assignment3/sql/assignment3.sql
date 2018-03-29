@@ -55,8 +55,9 @@ DROP TABLE IF EXISTS `feedbackquestions`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `feedbackquestions` (
   `QuestionNumber` int(11) NOT NULL AUTO_INCREMENT,
-  `Question` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`QuestionNumber`)
+  `Question` varchar(255) NOT NULL,
+  PRIMARY KEY (`QuestionNumber`),
+  UNIQUE KEY `QuestionNumber_UNIQUE` (`QuestionNumber`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,8 +79,8 @@ DROP TABLE IF EXISTS `instructors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `instructors` (
-  `firstname` varchar(45) DEFAULT NULL,
-  `lastname` varchar(45) DEFAULT NULL,
+  `firstname` varchar(45) NOT NULL,
+  `lastname` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(45) NOT NULL,
   `utorid` varchar(45) NOT NULL,
@@ -109,7 +110,13 @@ DROP TABLE IF EXISTS `marks`;
 CREATE TABLE `marks` (
   `utorid` varchar(45) NOT NULL,
   `quiz1` double DEFAULT NULL,
+  `quiz2` double DEFAULT NULL,
   `assignment1` double DEFAULT NULL,
+  `assignment2` double DEFAULT NULL,
+  `lab1` double DEFAULT NULL,
+  `lab2` double DEFAULT NULL,
+  `midterm` double DEFAULT NULL,
+  `finalexam` double DEFAULT NULL,
   PRIMARY KEY (`utorid`),
   UNIQUE KEY `utorid_UNIQUE` (`utorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -121,7 +128,7 @@ CREATE TABLE `marks` (
 
 LOCK TABLES `marks` WRITE;
 /*!40000 ALTER TABLE `marks` DISABLE KEYS */;
-INSERT INTO `marks` VALUES ('studenta',70,65.5),('studentb',60.5,95.8),('studentid',80,55.9);
+INSERT INTO `marks` VALUES ('studenta',70,84,65.5,89.6,86.2,75.5,54.8,65.3),('studentb',60.5,45.3,95.8,62,75,46,78.1,65),('studentid',80,92.3,55.9,95.6,95.3,100,78.2,56);
 /*!40000 ALTER TABLE `marks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +143,7 @@ CREATE TABLE `remarks` (
   `requestid` int(11) NOT NULL AUTO_INCREMENT,
   `requeststatus` tinyint(4) DEFAULT '1',
   `remarkitem` varchar(255) NOT NULL,
-  `remarkreason` varchar(255) DEFAULT NULL,
+  `remarkreason` varchar(255) NOT NULL,
   `studentid` varchar(45) NOT NULL,
   PRIMARY KEY (`requestid`),
   UNIQUE KEY `requestid_UNIQUE` (`requestid`)
@@ -161,8 +168,8 @@ DROP TABLE IF EXISTS `students`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `students` (
-  `firstname` varchar(45) DEFAULT NULL,
-  `lastname` varchar(45) DEFAULT NULL,
+  `firstname` varchar(45) NOT NULL,
+  `lastname` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(45) NOT NULL,
   `utorid` varchar(45) NOT NULL,
@@ -190,8 +197,8 @@ DROP TABLE IF EXISTS `tas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tas` (
-  `firstname` varchar(45) DEFAULT NULL,
-  `lastname` varchar(45) DEFAULT NULL,
+  `firstname` varchar(45) NOT NULL,
+  `lastname` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(45) NOT NULL,
   `utorid` varchar(45) NOT NULL,
@@ -220,4 +227,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-27 14:21:15
+-- Dump completed on 2018-03-29 17:49:55
