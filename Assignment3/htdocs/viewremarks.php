@@ -15,6 +15,7 @@ include('session.php');
   <?php
   include('navbar.php');
   // test feedback and remark table
+  echo "<br><br>";
   $sql = "SELECT * FROM marks";
   $result = $db->query($sql);
   if ($result->num_rows > 0) {
@@ -31,15 +32,8 @@ include('session.php');
       echo $print;
     }
   }
-  $s = "";
-  $double = bcadd($s, "0", 2);
-  echo $double;
-  echo "<br>";
-  echo is_numeric($double);
-   echo "<br>";
-   echo 0 <= $double && $double <= 100;
   // define variables and set to empty values
-  $item = $studentid = $mark = $fullrequest = "";
+  $item = $studentid = $mark = $fullrequest = $message =  "";
   $info = $request = $studentarr = $itemarr = $newMark = $markErr = $unique = array();
   $sql = "SELECT requestid, remarkitem, remarkreason, studentid FROM remarks WHERE requeststatus=1";
   $result = $db->query($sql);
@@ -63,12 +57,14 @@ include('session.php');
     for ($i = 0; $i < sizeof($unique); $i++) {
       $input = test_input($_POST["$unique[$i]"]);
       $double = bcadd($input, "0", 2);
-      if (!is_numeric($input) && $input != "") {
-        $markErr[$i] = "* Input must be numeric";
-      } elseif (!(0 <= $double && $double <= 100)) {
-        $markErr[$i] = "* Mark must be between 0-100";
-      } else {
-        $newMark[$i] = $double;
+      if ($input != "") {
+        if (!is_numeric($input)) {
+          $markErr[$i] = "* Input must be numeric";
+        } elseif (!(0 <= $double && $double <= 100)) {
+          $markErr[$i] = "* Mark must be between 0-100";
+        } else {
+          $newMark[$i] = $double;
+        }
       }
     }
   }
@@ -100,8 +96,8 @@ include('session.php');
       echo "<br>";
       echo "<br>";
       echo "New Mark: ";
-        echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
-        echo "<span class=\"error\">".$markErr[$i]."</span><br>";
+      echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
+      echo "<span class=\"error\">".$markErr[$i]."</span><br>";
       echo "</div>";
 
     }
@@ -110,13 +106,14 @@ include('session.php');
   </form>
   <?php
   if(isset($_POST['submit'])){
-    if ($markErr == '') {
-      $sql = "";
-      for ($i = 0; $i < sizeof($info); $i++) {
-        if (empty($_POST($newMark[$i]))){
-          $sql = $sql."UPDATE marks SET $item[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]';";
-        }
+    $sql = "";
+    for ($i = 0; $i < sizeof($unique); $i++) {
+      if ($newMark[$i] != "" && $markErr[$i] == "") {
+        $message = $message." ".$newMark[$i];
+        $sql = $sql."UPDATE marks SET $item[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]';";
       }
+    }
+    echo "<script type='text/javascript'>alert('$message');</script>";
        //  if ($db->query($sql) == TRUE) {
        //    $message = "All changes have been recorded";
        //    echo "<script type='text/javascript'>alert('$message'); location=\"viewremarks.php\"</script>";
@@ -124,7 +121,6 @@ include('session.php');
        //   $message = "Error: ".$sql."<br>".$db->error;
        //   echo "<script type='text/javascript'>alert('$message');</script>";
        // }
-    }
   }
   include('footer.php');
   ?>
