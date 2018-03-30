@@ -14,7 +14,7 @@ include('session.php');
 <body>
   <?php
   include('navbar.php');
-  // test feedback and remark table
+  // test mark and remark table
   echo "<br><br>";
   $sql = "SELECT * FROM marks";
   $result = $db->query($sql);
@@ -35,6 +35,7 @@ include('session.php');
   // define variables and set to empty values
   $item = $studentid = $mark = $fullrequest = $message =  "";
   $info = $request = $studentarr = $itemarr = $newMark = $markErr = $unique = array();
+  // Setting up all the arrays and variables
   $sql = "SELECT requestid, remarkitem, remarkreason, studentid FROM remarks WHERE requeststatus=1";
   $result = $db->query($sql);
   if ($result->num_rows > 0) {
@@ -43,16 +44,19 @@ include('session.php');
       $itemarr[] = $item;
       $studentid = $row['studentid'];
       $studentarr[] = $studentid;
+      // Unique would be the combination of the studentid and item they want remarked.
+      // This would be the name of each input box to be retreived later
       $unique[] = $studentid.$item;
       $sql = "SELECT $item FROM marks WHERE utorid='$studentid'";
       $mark = $db->query($sql)->fetch_assoc()[$item];
       $info[] = "StudentID: ".$studentid."<br>Item: ".$item;
-      $request[] = "Mark Received: ".$mark.".<br>Request Reason: ".$row['remarkreason'];
+      $request[] = "Mark Received: ".$mark."<br>Request Reason: ".$row['remarkreason'];
     }
   } else {
     echo "0 results";
   }
 
+  // Pulling all of the inputed data and error checking
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     for ($i = 0; $i < sizeof($unique); $i++) {
       $input = test_input($_POST["$unique[$i]"]);
@@ -89,6 +93,7 @@ include('session.php');
 
   <form method="post" action="">
     <?php
+    // Format for each remark request
     for ($i = 0; $i < sizeof($info); $i++) {
       echo "<div class=\"mainsection\">";
       $fullrequest = $info[$i]."<br>".$request[$i];
@@ -105,23 +110,26 @@ include('session.php');
     <input id="submit" type="submit" name="submit" value="Submit">
   </form>
   <?php
+  // Process info after submit has been pressed
   if(isset($_POST['submit'])){
+    $sql = "";
     for ($i = 0; $i < sizeof($unique); $i++) {
       if ($newMark[$i] != "" && $markErr[$i] == "") {
-        $sql = "UPDATE marks SET $itemarr[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]'";
-        echo $sql;
-        echo "<br>";
-        //echo "<script type='text/javascript'>alert('$sql');</script>";
+        $sql = $sql."UPDATE marks SET $itemarr[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]' AND remarkitem = '$itemarr[$i]'; ";
       }
     }
-    
-       //  if ($db->query($sql) == TRUE) {
-       //    $message = "All changes have been recorded";
-       //    echo "<script type='text/javascript'>alert('$message'); location=\"viewremarks.php\"</script>";
-       //  } else {
-       //   $message = "Error: ".$sql."<br>".$db->error;
-       //   echo "<script type='text/javascript'>alert('$message');</script>";
-       // }
+
+    if ($db->query($sql) == TRUE) {
+      echo "success";
+      $message = "All changes have been recorded";
+      // echo "<script type='text/javascript'>alert('$message');</script>";
+    } else {
+      echo $sql;
+      echo "<br>";
+      echo $db->error;
+     $message = "Error: ".$sql."<br>".$db->error;
+     // echo "<script type='text/javascript'>alert('$message');</script>";
+   }
   }
   include('footer.php');
   ?>
