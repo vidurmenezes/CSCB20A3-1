@@ -31,6 +31,13 @@ include('session.php');
       echo $print;
     }
   }
+  $s = "";
+  $double = bcadd($s, "0", 2);
+  echo $double;
+  echo "<br>";
+  echo is_numeric($double);
+   echo "<br>";
+   echo 0 <= $double && $double <= 100;
   // define variables and set to empty values
   $item = $studentid = $mark = $fullrequest = "";
   $info = $request = $studentarr = $itemarr = $newMark = $markErr = $unique = array();
@@ -56,10 +63,10 @@ include('session.php');
     for ($i = 0; $i < sizeof($unique); $i++) {
       $input = test_input($_POST["$unique[$i]"]);
       $double = bcadd($input, "0", 2);
-      if (!is_numeric($input)) {
-        $markErr[$i] = "Input must be numeric";
-      } elseif (0 <= $double && $double <= 100) {
-        $markErr[$i] = "Mark must be between 0-100";
+      if (!is_numeric($input) && $input != "") {
+        $markErr[$i] = "* Input must be numeric";
+      } elseif (!(0 <= $double && $double <= 100)) {
+        $markErr[$i] = "* Mark must be between 0-100";
       } else {
         $newMark[$i] = $double;
       }
@@ -94,6 +101,7 @@ include('session.php');
       echo "<br>";
       echo "New Mark: ";
         echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
+        echo "<span class=\"error\">".$markErr[$i]."</span><br>";
       echo "</div>";
 
     }
