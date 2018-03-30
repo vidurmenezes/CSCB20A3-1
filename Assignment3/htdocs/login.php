@@ -87,14 +87,6 @@ function validateForm() {
                 echo "</div>";
             }
           ?>
-
-
-
-
-
-  
-
-
 <body>
   
   <div id="background">
@@ -159,7 +151,7 @@ function validateForm() {
 <?php
    include('footer.php');
 ?>
-    </div>
+</div>
 </body>
 
 </html>

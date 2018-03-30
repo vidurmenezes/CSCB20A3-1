@@ -16,27 +16,26 @@
    $taDb = "tas";
    $instructorDb = "instructors";
    //INSERT INTO instructors VALUES ("firstname","lastname","email","password");
-    
-    $sql = "INSERT INTO ".$usertype." VALUES ("."'".$firstname."','".$lastname."','".$myusername."','".$mypassword."','".$utorid."')";
-    
-    /*if($usertype == "students"){
-        $marks = "marks"
-        //$student = "INSERT INTO ".$marks." VALUES ("."'".$firstname."','".$lastname."','".$myusername."','".$mypassword."')";
-        //$studres = mysqli_query($db,$student);
-        if(!studres){
-            header("location: login.php");
-        }
-        
-    }*/
-      $result = mysqli_query($db,$sql);
+        $sql = "INSERT INTO ".$usertype." VALUES ("."'".$firstname."','".$lastname."','".$myusername."','".$mypassword."','".$utorid."')";
+   $result = mysqli_query($db,$sql);
       if($result) {
          //session_register("myusername");
          $_SESSION['register'] = 'false';
          $_SESSION['login_user'] = $utorid;
          $_SESSION['usertype'] = $usertype;
+          
+        if($usertype == "students"){
+            $marks = "marks";
+            $student = "INSERT INTO ".$marks." VALUES (".$utorid.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)";
+            $studres = mysqli_query($db,$student);
+            if(!studres){
+                header("location: login.php");
+            }
         //  session_destroy(); 
          header("location: index.php");
-      }else {
+      } 
+    }
+     else {
           $_SESSION['register'] = 'true';
           header("location:login.php");
       }

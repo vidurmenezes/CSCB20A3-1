@@ -6,7 +6,16 @@
    $_SESSION['instructors'] = false;
    $_SESSION['students'] = false;
    $_SESSION['tas'] = false;
-   if($usertype == "instructors"){
+ 
+   $ses_sql = mysqli_query($db,"select * from ".$usertype." where utorid = '$user_check'");
+   $row = mysqli_fetch_array($ses_sql,MYSQLI_ASSOC);
+   $email = $row['email'];
+   $fname = $row['firstname'];
+   $lname = $row['lastname'];
+   $_SESSION['firstname'] = $fname;
+   $_SESSION['lastname'] = $lname;
+
+  if($usertype == "instructors"){
        $_SESSION['instructors'] = true;
    }
    else if($usertype == "tas"){
@@ -16,13 +25,6 @@
        $_SESSION['students'] = true;
    }
 
-   $ses_sql = mysqli_query($db,"select * from ".$usertype." where utorid = '$user_check'");
-   $row = mysqli_fetch_array($ses_sql,MYSQLI_ASSOC);
-   $email = $row['email'];
-   $fname = $row['firstname'];
-   $lname = $row['lastname'];
-   $_SESSION['firstname'] = $fname;
-   $_SESSION['lastname'] = $lname;
    // echo '<script type="text/javascript">alert("'.$fname.'");</script>';
    //echo $name;
    if(!isset($_SESSION['login_user'])){

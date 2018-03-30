@@ -77,13 +77,14 @@ a {
     background-image: url(./img/background4.jpg);
   }
   #CourseTitle {
+       margin-top: 0px;
     color: white;
     text-align: center;
     width: auto;
     margin-left: 0px;
   }
   .container {
-    -webkit-box-shadow: 8px 5px 5px -2px #888;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.22);
     width:80%;
     margin-left:10%;
     font-size: 22px;
