@@ -61,6 +61,7 @@ include('session.php');
     for ($i = 0; $i < sizeof($unique); $i++) {
       $input = test_input($_POST["$unique[$i]"]);
       $double = bcadd($input, "0", 2);
+      // $double = floatval($double);
       if ($input != "") {
         if (!is_numeric($input)) {
           $markErr[$i] = "* Input must be numeric";
@@ -119,16 +120,13 @@ include('session.php');
       }
     }
 
-    if ($db->query($sql) == TRUE) {
+    if ($db->multi_query($sql) == TRUE) {
       echo "success";
       $message = "All changes have been recorded";
-      // echo "<script type='text/javascript'>alert('$message');</script>";
+      echo "<script type='text/javascript'>alert('$message'); </script>";
     } else {
-      echo $sql;
-      echo "<br>";
-      echo $db->error;
-     $message = "Error: ".$sql."<br>".$db->error;
-     // echo "<script type='text/javascript'>alert('$message');</script>";
+     $message = "Error: $db->error";
+     echo "<script type='text/javascript'>alert('$message'); </script>";
    }
   }
   include('footer.php');
