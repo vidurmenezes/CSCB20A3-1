@@ -108,7 +108,9 @@ include('session.php');
 
     }
     ?>
-    <input id="submit" type="submit" name="submit" value="Submit">
+    <div class="submitbutton">
+      <input id="submit" type="submit" name="submit" value="Submit">
+    </div>
   </form>
   <?php
   // Process info after submit has been pressed
@@ -128,9 +130,9 @@ include('session.php');
      $message = "Error: $db->error";
      echo "<script type='text/javascript'>alert('$message'); </script>";
    }
-  }
-  include('footer.php');
-  ?>
+ }
+ include('footer.php');
+ ?>
 </body>
 
 </html>

@@ -65,3 +65,7 @@ input[type=submit] {
     -webkit-border-radius: 5px;
     border-radius: 5px; 
 }
+
+.submitbutton {
+  text-align: center;
+}
