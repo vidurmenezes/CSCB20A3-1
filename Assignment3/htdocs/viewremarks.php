@@ -106,14 +106,15 @@ include('session.php');
   </form>
   <?php
   if(isset($_POST['submit'])){
-    $sql = "";
     for ($i = 0; $i < sizeof($unique); $i++) {
       if ($newMark[$i] != "" && $markErr[$i] == "") {
-        $message = $message." ".$newMark[$i];
-        $sql = $sql."UPDATE marks SET $item[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]';";
+        $sql = "UPDATE marks SET $itemarr[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]'";
+        echo $sql;
+        echo "<br>";
+        //echo "<script type='text/javascript'>alert('$sql');</script>";
       }
     }
-    echo "<script type='text/javascript'>alert('$message');</script>";
+    
        //  if ($db->query($sql) == TRUE) {
        //    $message = "All changes have been recorded";
        //    echo "<script type='text/javascript'>alert('$message'); location=\"viewremarks.php\"</script>";
