@@ -1,215 +1,156 @@
 <?php
-   include('session.php');
+include('session.php');
 ?>
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="viewmarks.css">
+  <link rel="stylesheet" type="text/css" href="viewallmarks.css">
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
 </head>
 
 <body>
-    <?php
-          $worked = $_SESSION['worked'];
-          //echo $erroreg;
-          if($worked){
-                echo "<div class='alert'>";
-                echo "<span class='closebtn' onclick=\"this.parentElement.style.display='none';\">&times;</span>";
-                echo "<strong>WORKED!</strong> Remark Submitted";
-                echo "</div>";
-            }
-            
-?>
-
   <?php
-    include('navbar.php');
-    $_SESSION['worked']=false;
-   $quiz = "select * from marks where utorid = "."'".$_SESSION['login_user']."'"; 
-  $result=mysqli_query($db,$quiz);
-  $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+  include('navbar.php');
+  // define variables and set to empty values
+  $studentid = $mark = $message =  $choice = $markchoice = "";
+  $err = FALSE;
+  $studentarr = $newMark = $markErr = $currMark = array();
+  if ($_GET["type"]) {
+    $markchoice = $_GET["type"];
+    $sql = "SELECT utorid, $markchoice FROM marks";
+    $result = $db->query($sql);
+    if ($result->num_rows > 0) {
+      while ($row = $result->fetch_assoc()) {
+        $id =  $row['utorid'];
+        $studentarr[] = $id;
+        $mark = $row["$markchoice"];
+        $currMark[] = $mark;
+        $unique = $id.$mark;
+        $uniqueArr[] = $unique;
+      }
+    }
+  }
+  // Pulling all of the inputed data and error checking
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    for ($i = 0; $i < sizeof($uniqueArr); $i++) {
+      $input = test_input($_POST["$uniqueArr[$i]"]);
+      $double = bcadd($input, "0", 2);
+      $double = floatval($double);
+
+      if ($input != "") {
+        if (!is_numeric($input)) {
+          $markErr[$i] = "* Input must be numeric";
+          $err = TRUE;
+        } elseif (!(0 <= $double && $double <= 100)) {
+          $err = TRUE;
+          $markErr[$i] = "* Mark must be between 0-100";
+        } else {
+          $newMark[$i] = $double;
+        }
+      }
+    }
+  }
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+
+  function reload($data) {
+    header("viewallmarks.php?type=".$data);
+  }
+
   ?>
+
   <div id="background">
     <div id="CourseTitle">
-    <div class="myBounceDiv">
-      <h1>View Marks</h1>
-      <br>
-      <i class="far fa-newspaper fa-5x"></i>
-    </div>
+      <div class="myBounceDiv">
+        <h1>Class Marks</h1>
+        <br>
+        <i class="far fa-newspaper fa-5x"></i>
       </div>
     </div>
-<form action="" method="get">
-<div class='mainsection'>
-<h4>QUIZ</h4>    
-      <!--echo "<h4>Quiz1 :</h4>$row['quiz1'];-->
-  
-  <h3 >
-  <input type="checkbox" name="type[]" value="0">
-  Quiz1:   
-  <?php 
-      if($row['quiz1']==''){
-          echo "Not Marked";
-      }
-      else{
-          echo $row['quiz1']."%\r";
-      }
-      ?>
-  <input type="text" name="remark[]">
-  </h3>
-   
-  <h3>Quiz2: 
-  <?php if($row['quiz2']==''){
-          echo "Not Marked";
-      }
-      else{
-          echo $row['quiz2']."%\r";
-      }?>
-      <input type="text" name="remark[]">
-  </h3>
   </div>
 
+  <div id="markchoice" class="dropdown">
+    <h2>Choose The NEED TO THINK OF NAME</h2>
+    <form id="choice" method="post">
+      <select name="markcolumns">
+        <?php
+        $sql = "SHOW COLUMNS FROM marks";
+        $result = mysqli_query($db,$sql);
+        if ($result->num_rows > 0) {
+          while($row = mysqli_fetch_array($result)){
+            if ($row['Field'] != "utorid") {
+              echo $row['Field']."<br>";
+              echo "<option value=\"".$row['Field']."\">".$row['Field']."</option>";
+            }
+          }
+        } else {
+          echo "<option>0 results</option>";
+        }
+        ?>
+      </select>
+      <input type="submit" name="choose" value="Generate Marks">
+    </form> 
+  </div>
   <div class="mainsection">
-    <h4>LABS</h4>
-        <!--echo "<h4>Quiz1 :</h4>$row['quiz1'];-->
-      <h3>LAB1: 
-      <?php
-      if($row['lab1']==''){
-          echo "Not Marked";
-      }
-      else{
-          echo $row['lab1']."%\r";
-      }?>
-      <input type="text" name="remark[]">
-      </h3>
-      <h3>LAB2: 
-      <?php 
-      if($row['lab2']==''){
-          echo "Not Marked";
-      }
-      else{
-          echo $row['lab2']."%\r";
-      }?>
-      <input type="text" name="remark[]">
-      </h3>
-  </div>
-    
-  <div class="mainsection">
-    <h4>ASSIGNMENT</h4>
-     
-      <h3>Assignment 1: 
-      <?php
-      if($row['assignment1']==''){
-          echo "Not Marked";
-      }
-      else{
-          echo $row['assignment1']."%\r";
-      }?>
-      <input type="text" name="remark[]" value="quiz1">
-      </h3>
-      <h3>Assignment 2: 
-      <?php
-     if($row['assignment2']==''){
-          echo "Not Marked";
-      }
-      else{
-          echo $row['assignment2']."%\r";
-      }?>
-      <input type="text" name="remark[]">
-      </h3>
-  </div>
-    <div class="mainsection">
-    <h4>MIDTERMS</h4>
-    <h3>Midterm: 
-      <?php 
-      if($row['midterm']==''){
-          echo "Not Marked";
-      }
-      else{
-          echo $row['midterm']."%\r";
-      }?>
-      <input type="text" name="remark[]">
-      </h3>
-  </div>
-    <div class="mainsection">
-    <h4>FINAL EXAM</h4>
-    <h3>Final Exam: 
-      <?php 
-      if($row['finalexam']==''){
-          echo "Not Marked";
-      }
-      else{
-          echo $row['finalexam']."%\r";
-      }?>
-      <input type="text" name="remark[]">
-      </h3>
-  </div>
-    <div class="mainsection">
-      <input type="submit" value="Submit">
+
+    <form method="post" action="">
+      <div class="table">
+        <?php
+        if ($_GET["type"]) {
+          echo "<div class=\"row\">";
+          echo "<div class=\"cell\">utorid</div>";
+          echo "<div class=\"cell\">$markchoice</div>";
+          echo "</div>";
+          for ($i = 0; $i < sizeof($uniqueArr); $i++) {
+            $unique = $uniqueArr[$i];
+            $id = $studentarr[$i];
+            $mark = $currMark[$i];
+            echo "<div class=\"row\">";
+            echo "<div class=\"cell\">$id</div>";
+            echo "<div class=\"cell\">";
+            echo "<input type=\"text\" name=\"$unique\" class=\"marks\" value=\"$mark\">";
+            echo "</div>";
+            echo "</div>"; 
+            echo "<br>";
+          }
+        }
+
+        ?>
+      </div>
     </div>
- </form>
-<?php
-   include('footer.php');
-?>
-<?php
-
-$name = $_GET['remark'];
-$type = $_GET['type'];
-
-// optional
-// echo "You chose the following color(s): <br>";
-$match = array();
-$x = 0;
-
-
-foreach ($name as $color){
-    if($color != ''){
-        if($x == 0){
-         $query = "insert into remarks values(NULL,'1','quiz1',"."'".$color."',"."'".$_SESSION['login_user']."')";
-
+    <div class="submitbutton">
+      <input id="submit" type="submit" name="submit" value="Submit">
+    </div>
+  </form>
+  <?php
+  if (isset($_POST['choose'])){
+    header("location: viewallmarks.php?type=".$_POST['markcolumns']);
+  }
+  // Process info after submit has been pressed
+  elseif(isset($_POST['submit'])){
+    $sql = "";
+    if (!$err) {
+      for ($i = 0; $i < sizeof($uniqueArr); $i++) {
+        if ($newMark[$i] != "" || is_numeric($newMark[$i])) {
+          $sql = $sql."UPDATE marks SET $markchoice=$newMark[$i] WHERE utorid='$studentarr[$i]'; ";
         }
-        if($x == 1){
-          $query = "insert into remarks values(NULL,'1','quiz2',"."'".$color."',"."'".$_SESSION['login_user']."')";
-
-        }
-        if($x == 2){
-           $query = "insert into remarks values(NULL,'1','lab1',"."'".$color."',"."'".$_SESSION['login_user']."')";
- 
-        }
-        if($x == 3){
-           $query = "insert into remarks values(NULL,'1','lab2',"."'".$color."',"."'".$_SESSION['login_user']."')";
- 
-        }
-        if($x == 4){
-            $query = "insert into remarks values(NULL,'1','assignment1',"."'".$color."',"."'".$_SESSION['login_user']."')";
-
-        }
-        if($x == 5){
-            $query = "insert into remarks values(NULL,'1','assignment2',"."'".$color."',"."'".$_SESSION['login_user']."')";
-
-        }
-        if($x == 6){
-            $query = "insert into remarks values(NULL,'1','midterm',"."'".$color."',"."'".$_SESSION['login_user']."')";
-
-        }
-        if($x == 7){
-            $query = "insert into remarks values(NULL,'1','finalexam',"."'".$color."',"."'".$_SESSION['login_user']."')";
-
-        }
-        $ses_sql = mysqli_query($db,$query);
-                
+      }
+      if ($db->multi_query($sql)) {
+        $message = "All changes have been recorded";
+        echo "<script type='text/javascript'>alert('$message'); location=\"viewallmarks.php?type=$markchoice\"</script>";
+        
+      }
     }
-    $x += 1;
-}
-if($ses_sql){
-     $_SESSION['worked'] = true;
-}
-header("location:viewmarks.php");
-
-
-?>
-
+  }
+  include('footer.php');
+  ?>
 </body>
 
 </html>

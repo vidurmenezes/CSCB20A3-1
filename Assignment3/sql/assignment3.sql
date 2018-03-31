@@ -2,9 +2,9 @@ CREATE DATABASE  IF NOT EXISTS `assignment3` /*!40100 DEFAULT CHARACTER SET utf8
 USE `assignment3`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: assignment3
+-- Host: localhost    Database: assignment3
 -- ------------------------------------------------------
--- Server version	5.6.34-log
+-- Server version	5.7.21-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -79,11 +79,11 @@ DROP TABLE IF EXISTS `instructors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `instructors` (
+  `utorid` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `utorid` varchar(45) NOT NULL,
   PRIMARY KEY (`utorid`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `utorid_UNIQUE` (`utorid`)
@@ -96,7 +96,7 @@ CREATE TABLE `instructors` (
 
 LOCK TABLES `instructors` WRITE;
 /*!40000 ALTER TABLE `instructors` DISABLE KEYS */;
-INSERT INTO `instructors` VALUES ('instructorfa','instructorla','instructora@mail.utoronto.ca','instructora','instaid'),('instructorfb','instructorlb','instructorb@mail.utoronto.ca','instructorb','instbid'),('instructorfname','instructorlname','instructor@mail.utoronto.ca','instructor','instid');
+INSERT INTO `instructors` VALUES ('instaid','instructora','instructorfa','instructorla','instructora@mail.utoronto.ca'),('instbid','instructorb','instructorfb','instructorlb','instructorb@mail.utoronto.ca'),('instid','instructor','instructorfname','instructorlname','instructor@mail.utoronto.ca');
 /*!40000 ALTER TABLE `instructors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,8 +115,8 @@ CREATE TABLE `marks` (
   `assignment2` double DEFAULT NULL,
   `lab1` double DEFAULT NULL,
   `lab2` double DEFAULT NULL,
-  `midterm` double DEFAULT NULL,
-  `finalexam` double DEFAULT NULL,
+  `midtermtest` double DEFAULT NULL,
+  `finalexamtest` double DEFAULT NULL,
   PRIMARY KEY (`utorid`),
   UNIQUE KEY `utorid_UNIQUE` (`utorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -128,7 +128,7 @@ CREATE TABLE `marks` (
 
 LOCK TABLES `marks` WRITE;
 /*!40000 ALTER TABLE `marks` DISABLE KEYS */;
-INSERT INTO `marks` VALUES ('studenta',70,84,65.5,89.6,86.2,75.5,54.8,65.3),('studentb',60.5,45.3,95.8,62,75,46,78.1,65),('studentid',80,92.3,55.9,95.6,95.3,100,78.2,56);
+INSERT INTO `marks` VALUES ('studenta',45,84,65.5,89.6,86.2,75.5,54.8,65.3),('studentb',75.4,45.3,47.14,62,75,46,78.1,65),('studentid',74.2,92.3,55.9,95.6,95.3,100,78.2,56);
 /*!40000 ALTER TABLE `marks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,11 +168,11 @@ DROP TABLE IF EXISTS `students`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `students` (
+  `utorid` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `utorid` varchar(45) NOT NULL,
   PRIMARY KEY (`utorid`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `utorid_UNIQUE` (`utorid`)
@@ -185,7 +185,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES ('studentfa','studentla','studenta@mail.utoronto.ca','studenta','studenta'),('studentfb','studentlb','studentb@mail.utoronto.ca','studentb','studentb'),('studentfname','studentlname','student@mail.utoronto.ca','student','studentid');
+INSERT INTO `students` VALUES ('studenta','studenta','studentfa','studentla','studenta@mail.utoronto.ca'),('studentb','studentb','studentfb','studentlb','studentb@mail.utoronto.ca'),('studentid','student','studentfname','studentlname','student@mail.utoronto.ca');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,11 +197,11 @@ DROP TABLE IF EXISTS `tas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tas` (
+  `utorid` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `utorid` varchar(45) NOT NULL,
   PRIMARY KEY (`utorid`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `utorid_UNIQUE` (`utorid`)
@@ -214,7 +214,7 @@ CREATE TABLE `tas` (
 
 LOCK TABLES `tas` WRITE;
 /*!40000 ALTER TABLE `tas` DISABLE KEYS */;
-INSERT INTO `tas` VALUES ('tafa','tala','taa@mail.utoronto.ca','taa','taaid'),('tafb','talb','tab@mail.utoronto.ca','tab','tabid'),('tafname','talname','ta@mail.utoronto.ca','ta','taid');
+INSERT INTO `tas` VALUES ('taaid','taa','tafa','tala','taa@mail.utoronto.ca'),('tabid','tab','tafb','talb','tab@mail.utoronto.ca'),('taid','ta','tafname','talname','ta@mail.utoronto.ca');
 /*!40000 ALTER TABLE `tas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -227,4 +227,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-29 17:49:55
+-- Dump completed on 2018-03-31 16:23:52
