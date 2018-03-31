@@ -18,7 +18,6 @@ include('session.php');
   $studentid = $mark = $message =  $choice = $markchoice = "";
   $err = FALSE;
   $studentarr = $newMark = $markErr = $currMark = array();
-
   if ($_GET["type"]) {
     $markchoice = $_GET["type"];
     $sql = "SELECT utorid, $markchoice FROM marks";
@@ -40,6 +39,7 @@ include('session.php');
       $input = test_input($_POST["$uniqueArr[$i]"]);
       $double = bcadd($input, "0", 2);
       $double = floatval($double);
+
       if ($input != "") {
         if (!is_numeric($input)) {
           $markErr[$i] = "* Input must be numeric";
@@ -138,14 +138,14 @@ include('session.php');
     $sql = "";
     if (!$err) {
       for ($i = 0; $i < sizeof($uniqueArr); $i++) {
-        if ($newMark[$i] != "") {
+        if ($newMark[$i] != "" || is_numeric($newMark[$i])) {
           $sql = $sql."UPDATE marks SET $markchoice=$newMark[$i] WHERE utorid='$studentarr[$i]'; ";
         }
       }
       if ($db->multi_query($sql)) {
-        echo "success";
         $message = "All changes have been recorded";
         echo "<script type='text/javascript'>alert('$message'); location=\"viewallmarks.php?type=$markchoice\"</script>";
+        
       }
     }
   }

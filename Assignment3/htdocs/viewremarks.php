@@ -121,7 +121,7 @@ include('session.php');
   if(isset($_POST['submit'])){
     $sql = "";
     for ($i = 0; $i < sizeof($unique); $i++) {
-      if ($newMark[$i] != "" && $markErr[$i] == "") {
+      if (($newMark[$i] != "" || is_numeric($newMark[$i])) && $markErr[$i] == "") {
         $sql = $sql."UPDATE marks SET $itemarr[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]' AND remarkitem = '$itemarr[$i]'; ";
       }
     }
