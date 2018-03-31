@@ -15,7 +15,18 @@ include('session.php');
   <?php
   include('navbar.php');
   // test mark and remark table
-  // echo "<br><br>";
+  echo "<br><br>";
+  // $database = DB_DATABASE;
+  // $sql = "SELECT `COLUMN_NAME` 
+  // FROM `INFORMATION_SCHEMA`.`COLUMNS` 
+  // WHERE `TABLE_SCHEMA`='$database' 
+  // AND `TABLE_NAME`='marks';";
+  // echo $sql;
+  $sql = "SHOW COLUMNS FROM marks";
+  $result = mysqli_query($db,$sql);
+  while($row = mysqli_fetch_array($result)){
+    echo $row['Field']."<br>";
+  }
   // $sql = "SELECT * FROM marks";
   // $result = $db->query($sql);
   // if ($result->num_rows > 0) {
@@ -25,10 +36,12 @@ include('session.php');
   //   }
   // }
   // define variables and set to empty values
-  $item = $studentid = $mark = $fullrequest = $message =  "";
+  $item = $studentid = $mark = $fullrequest = $message =  $choice = "";
   $info = $request = $studentarr = $itemarr = $newMark = $markErr = $unique = array();
   // Setting up all the arrays and variables
   $sql = "SELECT requestid, remarkitem, remarkreason, studentid FROM remarks WHERE requeststatus=1";
+  echo $markchoice;
+  echo "hello";
   $result = $db->query($sql);
   if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
@@ -85,8 +98,36 @@ include('session.php');
     echo "<h3 style=\"text-align: center;\"> No Marks Available At This Time</h3>";
   } else {
     ?>
+    <div id="markchoice" class="dropdown">
+      <h2>Choose The NEED TO THINK OF NAME</h2>
+      <form id="choice" method="post">
+        <select name="markcolumns" onChange="change()">
+          <?php
+          $sql = "SHOW COLUMNS FROM marks";
+          $result = mysqli_query($db,$sql);
+          if ($result->num_rows > 0) {
+            while($row = mysqli_fetch_array($result)){
+              if ($row['Field'] != "utorid") {
+                echo $row['Field']."<br>";
+                echo "<option value=\"".$row['Field']."\">".$row['Field']."</option>";
+              }
+            }
+          } else {
+            echo "<option>0 results</option>";
+          }
+          ?>
+        </select>
+      </form>
+      <script>
+        function change(){
+          document.getElementById("choice").submit();
+        }
+      </script> 
+    </div>
     <form method="post" action="">
       <?php
+      $markchoice = $_POST['markcolumns'];
+      echo $markchoice;
     // Format for each remark request
       for ($i = 0; $i < sizeof($unique); $i++) {
         echo "<div class=\"mainsection\">";
