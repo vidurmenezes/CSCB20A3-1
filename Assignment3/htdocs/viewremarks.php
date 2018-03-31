@@ -15,23 +15,23 @@ include('session.php');
   <?php
   include('navbar.php');
   // test mark and remark table
-  echo "<br><br>";
-  $sql = "SELECT * FROM marks";
-  $result = $db->query($sql);
-  if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-      $print = $row['utorid'].": ".$row['quiz1'].", ".$row['quiz2'].", ".$row['assignment1'].", ".$row['assignment2']."<br>";
-      echo $print;
-    }
-  }
-  $sql = "SELECT * FROM remarks";
-  $result = $db->query($sql);
-  if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-      $print = $row['requestid'].": ".$row['requeststatus'].", ".$row['remarkitem'].", ".$row['remarkreason'].", ".$row['studentid']."<br>";
-      echo $print;
-    }
-  }
+  // echo "<br><br>";
+  // $sql = "SELECT * FROM marks";
+  // $result = $db->query($sql);
+  // if ($result->num_rows > 0) {
+  //   while ($row = $result->fetch_assoc()) {
+  //     $print = $row['utorid'].": ".$row['quiz1'].", ".$row['quiz2'].", ".$row['assignment1'].", ".$row['assignment2']."<br>";
+  //     echo $print;
+  //   }
+  // }
+  // $sql = "SELECT * FROM remarks";
+  // $result = $db->query($sql);
+  // if ($result->num_rows > 0) {
+  //   while ($row = $result->fetch_assoc()) {
+  //     $print = $row['requestid'].": ".$row['requeststatus'].", ".$row['remarkitem'].", ".$row['remarkreason'].", ".$row['studentid']."<br>";
+  //     echo $print;
+  //   }
+  // }
   // define variables and set to empty values
   $item = $studentid = $mark = $fullrequest = $message =  "";
   $info = $request = $studentarr = $itemarr = $newMark = $markErr = $unique = array();
@@ -52,16 +52,13 @@ include('session.php');
       $info[] = "StudentID: ".$studentid."<br>Item: ".$item;
       $request[] = "Mark Received: ".$mark."<br>Request Reason: ".$row['remarkreason'];
     }
-  } else {
-    echo "0 results";
   }
-
   // Pulling all of the inputed data and error checking
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     for ($i = 0; $i < sizeof($unique); $i++) {
       $input = test_input($_POST["$unique[$i]"]);
       $double = bcadd($input, "0", 2);
-      // $double = floatval($double);
+      $double = floatval($double);
       if ($input != "") {
         if (!is_numeric($input)) {
           $markErr[$i] = "* Input must be numeric";
@@ -91,27 +88,34 @@ include('session.php');
       </div>
     </div>
   </div>
-
-  <form method="post" action="">
-    <?php
-    // Format for each remark request
-    for ($i = 0; $i < sizeof($info); $i++) {
-      echo "<div class=\"mainsection\">";
-      $fullrequest = $info[$i]."<br>".$request[$i];
-      echo $fullrequest;
-      echo "<br>";
-      echo "<br>";
-      echo "New Mark: ";
-      echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
-      echo "<span class=\"error\">".$markErr[$i]."</span><br>";
-      echo "</div>";
-
-    }
+  <?php
+  if (sizeof($unique) == 0) {
+    echo "<h3 style=\"text-align: center;\"> No Remark Requests At This Time</h3>";
+  } else {
     ?>
-    <div class="submitbutton">
-      <input id="submit" type="submit" name="submit" value="Submit">
-    </div>
-  </form>
+    <form method="post" action="">
+      <?php
+    // Format for each remark request
+      for ($i = 0; $i < sizeof($unique); $i++) {
+        echo "<div class=\"mainsection\">";
+        $fullrequest = $info[$i]."<br>".$request[$i];
+        echo $fullrequest;
+        echo "<br>";
+        echo "<br>";
+        echo "New Mark: ";
+        echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
+        echo "<span class=\"error\">".$markErr[$i]."</span><br>";
+        echo "</div>";
+
+      }
+      ?>
+      <div class="submitbutton">
+        <input id="submit" type="submit" name="submit" value="Submit">
+      </div>
+    </form>
+    <?php
+  }
+  ?>
   <?php
   // Process info after submit has been pressed
   if(isset($_POST['submit'])){
@@ -125,14 +129,11 @@ include('session.php');
     if ($db->multi_query($sql) == TRUE) {
       echo "success";
       $message = "All changes have been recorded";
-      echo "<script type='text/javascript'>alert('$message'); </script>";
-    } else {
-     $message = "Error: $db->error";
-     echo "<script type='text/javascript'>alert('$message'); </script>";
-   }
- }
- include('footer.php');
- ?>
+      echo "<script type='text/javascript'>alert('$message'); location=\"viewremarks.php\"</script>";
+    }
+  }
+  include('footer.php');
+  ?>
 </body>
 
 </html>
