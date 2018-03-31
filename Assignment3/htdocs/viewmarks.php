@@ -6,7 +6,7 @@ include('session.php');
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="viewallmarks.css">
+  <link rel="stylesheet" type="text/css" href="viewmarks.css">
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
 </head>
@@ -15,142 +15,107 @@ include('session.php');
   <?php
   include('navbar.php');
   // define variables and set to empty values
-  $studentid = $mark = $message =  $choice = $markchoice = "";
+  $studentid = $mark = $message = $quizformat = $labformat = $assignmentformat = $testformat = $field = "";
   $err = FALSE;
-  $studentarr = $newMark = $markErr = $currMark = array();
-  if ($_GET["type"]) {
-    $markchoice = $_GET["type"];
-    $sql = "SELECT utorid, $markchoice FROM marks";
-    $result = $db->query($sql);
-    if ($result->num_rows > 0) {
-      while ($row = $result->fetch_assoc()) {
-        $id =  $row['utorid'];
-        $studentarr[] = $id;
-        $mark = $row["$markchoice"];
-        $currMark[] = $mark;
-        $unique = $id.$mark;
-        $uniqueArr[] = $unique;
+  $markErr = $items = $marks = array();
+
+  $studentid = $_SESSION['utorid'];
+  $quizformat = "<h2>Quizzes<h2><br><div class=\"table\">";
+  $labformat = "<h2>Labs<h2><br><div class=\"table\">";
+  $assignmentformat = "<h2>Assignments<h2><br><div class=\"table\">";
+  $testformat = "<h2>Tests<h2><br><div class=\"table\">";
+
+  $sql = "SHOW COLUMNS FROM marks";
+  $result = mysqli_query($db,$sql);
+  if ($result->num_rows > 0) {
+    while($row = mysqli_fetch_array($result)){
+      $field = $row['Field'];
+      if ($field != "utorid") {
+        $items[] = $field;
+      }
+    }
+  }
+  $sql = "SELECT * FROM marks WHERE utorid='$studentid'";
+  $result = $db->query($sql);
+  if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $studentid = $row['utorid'];
+    foreach ($items as $item) {
+      $mark = $row["$item"];
+      $marks[] = $row["$item"];
+      if (stripos($item, 'quiz') !== FALSE) {
+        $quizformat = $quizformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><input type=\"checkbox\" name=\"$item"."check"."\">";
+      } elseif (stripos($item, 'lab') !== FALSE) {
+        $labformat = $labformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><input type=\"checkbox\" name=\"$item"."check"."\">";
+      } elseif (stripos($item, 'assignment') !== FALSE) {
+        $assignmentformat = $assignmentformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><input type=\"checkbox\" name=\"$item"."check"."\">";
+      } elseif (stripos($item, 'test') !== FALSE) {
+        $testformat = $testformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><input type=\"checkbox\" name=\"$item"."check"."\">";
       }
     }
   }
   // Pulling all of the inputed data and error checking
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    for ($i = 0; $i < sizeof($uniqueArr); $i++) {
-      $input = test_input($_POST["$uniqueArr[$i]"]);
-      $double = bcadd($input, "0", 2);
-      $double = floatval($double);
+  // if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  //   for ($i = 0; $i < sizeof($items); $i++) {
+  //     $input = test_input($_POST["$items[$i]"]);
+  //     if ($input != "") {
+  //       if (!is_numeric($input)) {
+  //         $markErr[$i] = "* Input must be numeric";
+  //         $err = TRUE;
+  //       }
+  //     }
+  //   }
+  //   function test_input($data) {
+  //     $data = trim($data);
+  //     $data = stripslashes($data);
+  //     $data = htmlspecialchars($data);
+  //     return $data;
+  //   }
 
-      if ($input != "") {
-        if (!is_numeric($input)) {
-          $markErr[$i] = "* Input must be numeric";
-          $err = TRUE;
-        } elseif (!(0 <= $double && $double <= 100)) {
-          $err = TRUE;
-          $markErr[$i] = "* Mark must be between 0-100";
-        } else {
-          $newMark[$i] = $double;
-        }
-      }
-    }
-  }
-  function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
+    ?>
 
-  function reload($data) {
-    header("viewallmarks.php?type=".$data);
-  }
-
-  ?>
-
-  <div id="background">
-    <div id="CourseTitle">
-      <div class="myBounceDiv">
-        <h1>Class Marks</h1>
-        <br>
-        <i class="far fa-newspaper fa-5x"></i>
+    <div id="background">
+      <div id="CourseTitle">
+        <div class="myBounceDiv">
+          <h1>Your Marks</h1>
+          <br>
+          <i class="far fa-newspaper fa-5x"></i>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="markchoice" class="dropdown">
-    <h2>Choose The NEED TO THINK OF NAME</h2>
-    <form id="choice" method="post">
-      <select name="markcolumns">
-        <?php
-        $sql = "SHOW COLUMNS FROM marks";
-        $result = mysqli_query($db,$sql);
-        if ($result->num_rows > 0) {
-          while($row = mysqli_fetch_array($result)){
-            if ($row['Field'] != "utorid") {
-              echo $row['Field']."<br>";
-              echo "<option value=\"".$row['Field']."\">".$row['Field']."</option>";
-            }
-          }
-        } else {
-          echo "<option>0 results</option>";
-        }
-        ?>
-      </select>
-      <input type="submit" name="choose" value="Generate Marks">
-    </form> 
-  </div>
-  <div class="mainsection">
+    <div class="mainsection">
 
-    <form method="post" action="">
-      <div class="table">
-        <?php
-        if ($_GET["type"]) {
-          echo "<div class=\"row\">";
-          echo "<div class=\"cell\">utorid</div>";
-          echo "<div class=\"cell\">$markchoice</div>";
-          echo "</div>";
-          for ($i = 0; $i < sizeof($uniqueArr); $i++) {
-            $unique = $uniqueArr[$i];
-            $id = $studentarr[$i];
-            $mark = $currMark[$i];
-            echo "<div class=\"row\">";
-            echo "<div class=\"cell\">$id</div>";
-            echo "<div class=\"cell\">";
-            echo "<input type=\"text\" name=\"$unique\" class=\"marks\" value=\"$mark\">";
-            echo "</div>";
-            echo "</div>"; 
-            echo "<br>";
-          }
-        }
+      <form method="post" action="">
+        <div class="table">
+          <?php
 
-        ?>
+          ?>
+        </div>
       </div>
-    </div>
-    <div class="submitbutton">
-      <input id="submit" type="submit" name="submit" value="Submit">
-    </div>
-  </form>
-  <?php
-  if (isset($_POST['choose'])){
-    header("location: viewallmarks.php?type=".$_POST['markcolumns']);
-  }
+      <div class="submitbutton">
+        <input id="submit" type="submit" name="submit" value="Submit">
+      </div>
+    </form>
+    <?php
   // Process info after submit has been pressed
-  elseif(isset($_POST['submit'])){
-    $sql = "";
-    if (!$err) {
-      for ($i = 0; $i < sizeof($uniqueArr); $i++) {
-        if ($newMark[$i] != "" || is_numeric($newMark[$i])) {
-          $sql = $sql."UPDATE marks SET $markchoice=$newMark[$i] WHERE utorid='$studentarr[$i]'; ";
-        }
-      }
-      if ($db->multi_query($sql)) {
-        $message = "All changes have been recorded";
-        echo "<script type='text/javascript'>alert('$message'); location=\"viewallmarks.php?type=$markchoice\"</script>";
-        
-      }
-    }
-  }
-  include('footer.php');
-  ?>
-</body>
+  // if(isset($_POST['submit'])){
+  //   $sql = "";
+  //   if (!$err) {
+  //     for ($i = 0; $i < sizeof($uniqueArr); $i++) {
+  //       if ($newMark[$i] != "" || is_numeric($newMark[$i])) {
+  //         $sql = $sql."UPDATE marks SET $markchoice=$newMark[$i] WHERE utorid='$studentarr[$i]'; ";
+  //       }
+  //     }
+  //     if ($db->multi_query($sql)) {
+  //       $message = "All changes have been recorded";
+  //       echo "<script type='text/javascript'>alert('$message'); location=\"viewallmarks.php?type=$markchoice\"</script>";
 
-</html>
+  //     }
+  //   }
+  // }
+    include('footer.php');
+    ?>
+  </body>
+
+  </html>

@@ -14,6 +14,7 @@
    $lname = $row['lastname'];
    $_SESSION['firstname'] = $fname;
    $_SESSION['lastname'] = $lname;
+   $_SESSION['utorid'] = $row['utorid'];
 
   if($usertype == "instructors"){
        $_SESSION['instructors'] = true;

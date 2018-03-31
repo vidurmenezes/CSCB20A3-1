@@ -14,15 +14,6 @@ include('session.php');
 <body>
   <?php
   include('navbar.php');
-  // test feedback table
-  // $sql = "SELECT instructorid, question1, question2, question3, question4 FROM feedback";
-  // $result = $db->query($sql);
-  // if ($result->num_rows > 0) {
-  //   while ($row = $result->fetch_assoc()) {
-  //     $print = $row['instructorid'].": ".$row['question1'].", ".$row['question2'].", ".$row['question3'].", ".$row['question4']."<br>";
-  //     echo $print;
-  //   }
-  // }
   // define variables and set to empty values
   $answer1 = $answer2 = $answer3 = $answer4 = $instructor = "";
   $answer1Err = $answer2Err = $answer3Err = $answer4Err = "";
