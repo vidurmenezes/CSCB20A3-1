@@ -28,7 +28,7 @@ h3 {
   text-align: center;
   color: black;
   margin: 30px;
-    height: 150px;
+    height: 400px;
   margin-left: 10%;
   margin-right: 10%;
   border: 1px solid black;
@@ -49,6 +49,7 @@ option {
 
 .marks {
   width:45px;
+  text-align: center;
 }
 
 input[type=text] {
@@ -73,4 +74,14 @@ input[type=submit] {
 
 .submitbutton {
   text-align: center;
+}
+
+.table {
+  display: table;
+}
+.row {
+  display: table-row;
+}
+.cell {
+  display: table-cell;
 }
