@@ -127,7 +127,6 @@ include('session.php');
     }
 
     if ($db->multi_query($sql) == TRUE) {
-      echo "success";
       $message = "All changes have been recorded";
       echo "<script type='text/javascript'>alert('$message'); location=\"viewremarks.php\"</script>";
     }

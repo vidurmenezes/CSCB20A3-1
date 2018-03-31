@@ -1,52 +1,130 @@
 <?php
-   include('session.php');
+include('session.php');
 ?>
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="news.css">
+  <link rel="stylesheet" type="text/css" href="viewallmarks.css">
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
 </head>
+
 <body>
   <?php
-    include('navbar.php');
+  include('navbar.php');
+  // test mark and remark table
+  // echo "<br><br>";
+  // $sql = "SELECT * FROM marks";
+  // $result = $db->query($sql);
+  // if ($result->num_rows > 0) {
+  //   while ($row = $result->fetch_assoc()) {
+  //     $print = $row['utorid'].": ".$row['quiz1'].", ".$row['quiz2'].", ".$row['assignment1'].", ".$row['assignment2']."<br>";
+  //     echo $print;
+  //   }
+  // }
+  // define variables and set to empty values
+  $item = $studentid = $mark = $fullrequest = $message =  "";
+  $info = $request = $studentarr = $itemarr = $newMark = $markErr = $unique = array();
+  // Setting up all the arrays and variables
+  $sql = "SELECT requestid, remarkitem, remarkreason, studentid FROM remarks WHERE requeststatus=1";
+  $result = $db->query($sql);
+  if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+      $item = $row['remarkitem'];
+      $itemarr[] = $item;
+      $studentid = $row['studentid'];
+      $studentarr[] = $studentid;
+      // Unique would be the combination of the studentid and item they want remarked.
+      // This would be the name of each input box to be retreived later
+      $unique[] = $studentid.$item;
+      $sql = "SELECT $item FROM marks WHERE utorid='$studentid'";
+      $mark = $db->query($sql)->fetch_assoc()[$item];
+      $info[] = "StudentID: ".$studentid."<br>Item: ".$item;
+      $request[] = "Mark Received: ".$mark."<br>Request Reason: ".$row['remarkreason'];
+    }
+  }
+  // Pulling all of the inputed data and error checking
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    for ($i = 0; $i < sizeof($unique); $i++) {
+      $input = test_input($_POST["$unique[$i]"]);
+      $double = bcadd($input, "0", 2);
+      $double = floatval($double);
+      if ($input != "") {
+        if (!is_numeric($input)) {
+          $markErr[$i] = "* Input must be numeric";
+        } elseif (!(0 <= $double && $double <= 100)) {
+          $markErr[$i] = "* Mark must be between 0-100";
+        } else {
+          $newMark[$i] = $double;
+        }
+      }
+    }
+  }
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+
   ?>
+
   <div id="background">
     <div id="CourseTitle">
-    <div class="myBounceDiv">
-      <h1>NEWS</h1>
-      <br>
-      <i class="far fa-newspaper fa-5x"></i>
-    </div>
+      <div class="myBounceDiv">
+        <h1>Class Marks</h1>
+        <br>
+        <i class="far fa-newspaper fa-5x"></i>
       </div>
     </div>
-  <div class="mainsection">
-    <h4>January 2, 2018</h4>
-    <p>
-      Sitting mistake towards his few country ask. You delighted two rapturous six depending objection happiness something the. Off nay impossible dispatched partiality unaffected. Norland adapted put ham cordial. Ladies talked may shy basket narrow see. Him
-      she distrusts questions sportsmen. Tolerably pretended neglected on my earnestly by. Sex scale sir style truth ought.
-    </p>
   </div>
-  <div class="mainsection">
-    <h4>February 15, 2018</h4>
-    <p>
-      Agreed joy vanity regret met may ladies oppose who. Mile fail as left as hard eyes. Meet made call in mean four year it to. Prospect so branched wondered sensible of up. For gay consisted resolving pronounce sportsman saw discovery not. Northward or household
-      as conveying we earnestly believing. No in up contrasted discretion inhabiting excellence. Entreaties we collecting unpleasant at everything conviction.
-    </p>
-  </div>
-  <div class="mainsection">
-    <h4>March 2, 2018</h4>
-    <p>
-      Sussex result matter any end see. It speedily me addition weddings vicinity in pleasure. Happiness commanded an conveying breakfast in. Regard her say warmly elinor. Him these are visit front end for seven walls. Money eat scale now ask law learn. Side
-      its they just any upon see last. He prepared no shutters perceive do greatest. Ye at unpleasant solicitude in companions interested.
-    </p>
-  </div>
-<?php
-   include('footer.php');
-?>
+  <?php
+  if (sizeof($unique) == 0) {
+    echo "<h3 style=\"text-align: center;\"> No Marks Available At This Time</h3>";
+  } else {
+    ?>
+    <form method="post" action="">
+      <?php
+    // Format for each remark request
+      for ($i = 0; $i < sizeof($unique); $i++) {
+        echo "<div class=\"mainsection\">";
+        $fullrequest = $info[$i]."<br>".$request[$i];
+        echo $fullrequest;
+        echo "<br>";
+        echo "<br>";
+        echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
+        echo "<span class=\"error\">".$markErr[$i]."</span><br>";
+        echo "</div>";
+
+      }
+      ?>
+      <div class="submitbutton">
+        <input id="submit" type="submit" name="submit" value="Submit">
+      </div>
+    </form>
+    <?php
+  }
+  ?>
+  <?php
+  // Process info after submit has been pressed
+  if(isset($_POST['submit'])){
+    $sql = "";
+    for ($i = 0; $i < sizeof($unique); $i++) {
+      if ($newMark[$i] != "" && $markErr[$i] == "") {
+        $sql = $sql."UPDATE marks SET $itemarr[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]' AND remarkitem = '$itemarr[$i]'; ";
+      }
+    }
+
+    if ($db->multi_query($sql) == TRUE) {
+      echo "success";
+      $message = "All changes have been recorded";
+      echo "<script type='text/javascript'>alert('$message'); location=\"viewremarks.php\"</script>";
+    }
+  }
+  include('footer.php');
+  ?>
 </body>
 
 </html>
