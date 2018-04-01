@@ -24,10 +24,11 @@ h4{
 }
 
 .mainsection {
+  display: flex;
+  flex-direction: column;
   text-align: center;
   color: black;
   margin: 30px;
-    height: 200px;
   margin-left: 10%;
   margin-right: 10%;
   border: 1px solid black;
@@ -67,7 +68,9 @@ h4{
 }
 .row {
   display: table-row;
+
 }
 .cell {
   display: table-cell;
+  padding-left: 15%;
 }

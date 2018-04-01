@@ -20,10 +20,10 @@ include('session.php');
   $markErr = $items = $marks = array();
 
   $studentid = $_SESSION['utorid'];
-  $quizformat = "<h2>Quizzes<h2><br><div class=\"table\">";
-  $labformat = "<h2>Labs<h2><br><div class=\"table\">";
-  $assignmentformat = "<h2>Assignments<h2><br><div class=\"table\">";
-  $testformat = "<h2>Tests<h2><br><div class=\"table\">";
+  $quizformat = "Quizzes<br><div class=\"table\">";
+  $labformat = "Labs<br><div class=\"table\">";
+  $assignmentformat = "Assignments<br><div class=\"table\">";
+  $testformat = "Tests<br><div class=\"table\">";
 
   $sql = "SHOW COLUMNS FROM marks";
   $result = mysqli_query($db,$sql);
@@ -44,15 +44,19 @@ include('session.php');
       $mark = $row["$item"];
       $marks[] = $row["$item"];
       if (stripos($item, 'quiz') !== FALSE) {
-        $quizformat = $quizformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><input type=\"checkbox\" name=\"$item"."check"."\">";
+        $quizformat = $quizformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div>";
       } elseif (stripos($item, 'lab') !== FALSE) {
-        $labformat = $labformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><input type=\"checkbox\" name=\"$item"."check"."\">";
+        $labformat = $labformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div>";
       } elseif (stripos($item, 'assignment') !== FALSE) {
-        $assignmentformat = $assignmentformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><input type=\"checkbox\" name=\"$item"."check"."\">";
+        $assignmentformat = $assignmentformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div>";
       } elseif (stripos($item, 'test') !== FALSE) {
-        $testformat = $testformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><input type=\"checkbox\" name=\"$item"."check"."\">";
+        $testformat = $testformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div>";
       }
     }
+    $quizformat = $quizformat."</div><br>";
+    $labformat = $labformat."</div><br>";
+    $assignmentformat = $assignmentformat."</div><br>";
+    $testformat = $testformat."</div><br>";
   }
   // Pulling all of the inputed data and error checking
   // if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -89,12 +93,15 @@ include('session.php');
       <form method="post" action="">
         <div class="table">
           <?php
-
+            echo $quizformat;
+            echo $labformat;
+            echo $assignmentformat;
+            echo $testformat;
           ?>
         </div>
       </div>
       <div class="submitbutton">
-        <input id="submit" type="submit" name="submit" value="Submit">
+        <input id="submit" type="submit" name="submit" value="Submit Requests">
       </div>
     </form>
     <?php
