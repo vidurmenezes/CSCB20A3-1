@@ -15,11 +15,16 @@ include('session.php');
   <?php
   include('navbar.php');
   // define variables and set to empty values
-  $studentid = $mark = $message = $quizformat = $labformat = $assignmentformat = $testformat = $field = $remarks = $reason = "";
+  $studentid = $mark = $message = $quizformat = $labformat = $assignmentformat = $testformat = $field = $remarks = $reason = $sqlcheck = $success = "";
   $err = FALSE;
   $requestErr = $items = $marks = $requests = $updateItems = array();
-
   $studentid = $_SESSION['utorid'];
+
+  if ($_SESSION['success'] != "") {
+    $success = $_SESSION['success'];
+    echo "<script type='text/javascript'>alert('$success');</script>";
+  }
+  $_SESSION['success'] = "";
 
   $sql = "SHOW COLUMNS FROM marks";
   $result = mysqli_query($db,$sql);
@@ -33,21 +38,76 @@ include('session.php');
   }
   // Sort so that items are displayed in order
   sort($items);
+
+  $quizformat = "Quizzes";
+  $labformat = "Labs";
+  $assignmentformat = "Assignments";
+  $testformat = "Tests";
+
+  $adding = "<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div id=\"remark\" class=\"cell\">Remark</div></div><br>";
+
+  $quizformat = $quizformat.$adding;
+  $labformat = $labformat.$adding;
+  $assignmentformat = $assignmentformat.$adding;
+  $testformat = $testformat.$adding;
+
+  $sql = "SELECT * FROM marks WHERE utorid='$studentid'";
+  $result = $db->query($sql);
+  if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $studentid = $row['utorid'];
+    foreach ($items as $item) {
+      $mark = $row["$item"];
+      $marks[] = $row["$item"];
+      $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input id=\"remark\" type=\"checkbox\" name=\"$item"."check"."\"".$_SESSION["req"]["$item"."check"]."></div></div><textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\">".$_SESSION["req"]["$item"."req"]."</textarea> <div class=\"cell\"></div><div class=\"cell\"><span class=\"error\">".$_SESSION["err"]["$item"."err"]."</span></div>";
+
+      if (stripos($item, 'quiz') !== FALSE) {
+        $quizformat = $quizformat.$adding;
+      } elseif (stripos($item, 'lab') !== FALSE) {
+        $labformat = $labformat.$adding;
+      } elseif (stripos($item, 'assignment') !== FALSE) {
+        $assignmentformat = $assignmentformat.$adding;
+      } elseif ((stripos($item, 'midterm') !== FALSE) || (stripos($item, 'exam') !== FALSE)) {
+        $testformat = $testformat.$adding;
+      }
+    }
+    $quizformat = $quizformat."</div><br>";
+    $labformat = $labformat."</div><br>";
+    $assignmentformat = $assignmentformat."</div><br>";
+    $testformat = $testformat."</div><br>";
+  }
+
+  $_SESSION["err"] = array();
+  $_SESSION["req"] = array();
+
   // Pulling all of the inputed data and error checking
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach ($items as $item) {
       $requestErr[$item] = "";
+      
       if (isset($_POST["$item"."check"])){
-        if (empty($_POST["$item"."req"])) {
-          $requestErr[$item] = "* Reason is required";
+        $sqlcheck = "SELECT requeststatus FROM remarks WHERE remarkitem='$item' AND studentid='$studentid'";
+        $_SESSION["req"]["$item"."check"] = "checked";
+        $result = mysqli_query($db,$sqlcheck);
+        if (mysqli_query($db,$sqlcheck)->num_rows > 0) {
+          $requestErr[$item] = "* Request already submitted";
+          $_SESSION["err"]["$item"."err"] = $requestErr[$item];
           $err = TRUE;
         } else {
-          $reason = $_POST["$item"."req"];
-          $requests[] = $reason;
-          $updateItems[] = $item;
-          if (isset($reason[255])) {
+          if (empty($_POST["$item"."req"])) {
+            $requestErr[$item] = "* Reason is required";
+            $_SESSION["err"]["$item"."err"] = $requestErr[$item];
             $err = TRUE;
-            $requestErr[$item] = "* Answer cannot exceed 255 characters";
+          } else {
+            $reason = $_POST["$item"."req"];
+            $_SESSION["req"]["$item"."req"] = $reason;
+            $requests[] = $reason;
+            $updateItems[] = $item;
+            if (isset($reason[255])) {
+              $err = TRUE;
+              $requestErr[$item] = "* Answer cannot exceed 255 characters";
+              $_SESSION["err"]["$item"."err"] = $requestErr[$item];
+            }
           }
         }
       }
@@ -82,55 +142,19 @@ include('session.php');
     <form method="post" action="">
       <div class="table">
         <?php
-        $quizformat = "Quizzes";
-        $labformat = "Labs";
-        $assignmentformat = "Assignments";
-        $testformat = "Tests";
-
-        $adding = "<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div id=\"remark\" class=\"cell\">Remark</div></div>";
-
-        $quizformat = $quizformat.$adding;
-        $labformat = $labformat.$adding;
-        $assignmentformat = $assignmentformat.$adding;
-        $testformat = $testformat.$adding;
-
-        $sql = "SELECT * FROM marks WHERE utorid='$studentid'";
-        $result = $db->query($sql);
-        if ($result->num_rows > 0) {
-          $row = $result->fetch_assoc();
-          $studentid = $row['utorid'];
-          foreach ($items as $item) {
-            $mark = $row["$item"];
-            $marks[] = $row["$item"];
-            $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input id=\"remark\" type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\">".$_POST["$item"."req"]."</textarea> <span class=\"error\">".$requestErr[$item]."</span>";
-
-            if (stripos($item, 'quiz') !== FALSE) {
-              $quizformat = $quizformat.$adding;
-            } elseif (stripos($item, 'lab') !== FALSE) {
-              $labformat = $labformat.$adding;
-            } elseif (stripos($item, 'assignment') !== FALSE) {
-              $assignmentformat = $assignmentformat.$adding;
-            } elseif ((stripos($item, 'midterm') !== FALSE) || (stripos($item, 'exam') !== FALSE)) {
-              $testformat = $testformat.$adding;
-            }
-          }
-          $quizformat = $quizformat."</div><br>";
-          $labformat = $labformat."</div><br>";
-          $assignmentformat = $assignmentformat."</div><br>";
-          $testformat = $testformat."</div><br>";
-        }
         echo $quizformat;
         echo $labformat;
         echo $assignmentformat;
         echo $testformat;
         ?>
       </div>
-    </form>
-  </div>
 
-  <div class="submitbutton">
-    <input id="submit" type="submit" name="submit" value="Submit Requests">
-  </div>
+    </div>
+
+    <div class="submitbutton">
+      <input id="submit" type="submit" name="submit" value="Submit Requests">
+    </div>
+  </form>
   
   <?php
   // Process info after submit has been pressed
@@ -141,18 +165,15 @@ include('session.php');
         $sql = $sql."INSERT INTO remarks (remarkitem, remarkreason, studentid) VALUES ('$updateItems[$i]', '$requests[$i]', '$studentid'); ";
       }
       if ($db->multi_query($sql)) {
-        $message = "Your remark request(s) got submitted";
-        // echo "<script type='text/javascript'>alert('$message'); location=\"viewmarks.php\"</script>";
-      } else {
-        $message = "No remark requests were submitted";
-        // echo "<script type='text/javascript'>alert('$message');</script>";
+        $_SESSION['success'] = "Your remark request(s) got submitted";
+        $_SESSION["req"] = array();
+        $_SESSION["err"] = array();
       }
     } 
     else {
-      $message = "You have some errors in input";
-      // echo "<script type='text/javascript'>alert('$message');</script>";
+      $_SESSION['success'] = "You have some errors in input";
     }
-    header("Location: " . $_SERVER['REQUEST_URI']);
+    header("Location: viewmarks.php");
     exit();
   }
   include('footer.php');
