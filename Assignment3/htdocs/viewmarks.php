@@ -20,10 +20,6 @@ include('session.php');
   $requestErr = $items = $marks = $requests = $updateItems = array();
 
   $studentid = $_SESSION['utorid'];
-  $quizformat = "Quizzes<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
-  $labformat = "Labs<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
-  $assignmentformat = "Assignments<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
-  $testformat = "Tests<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
 
   $sql = "SHOW COLUMNS FROM marks";
   $result = mysqli_query($db,$sql);
@@ -35,53 +31,24 @@ include('session.php');
       }
     }
   }
-  $sql = "SELECT * FROM marks WHERE utorid='$studentid'";
-  $result = $db->query($sql);
-  if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $studentid = $row['utorid'];
-    foreach ($items as $item) {
-      $mark = $row["$item"];
-      $marks[] = $row["$item"];
-      $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\"></textarea>";
-      if (stripos($item, 'quiz') !== FALSE) {
-        $quizformat = $quizformat.$adding;
-      } elseif (stripos($item, 'lab') !== FALSE) {
-        $labformat = $labformat.$adding;
-      } elseif (stripos($item, 'assignment') !== FALSE) {
-        $assignmentformat = $assignmentformat.$adding;
-      } elseif (stripos($item, 'test') !== FALSE) {
-        $testformat = $testformat.$adding;
-      }
-    }
-    $quizformat = $quizformat."</div><br>";
-    $labformat = $labformat."</div><br>";
-    $assignmentformat = $assignmentformat."</div><br>";
-    $testformat = $testformat."</div><br>";
-  }
   // Pulling all of the inputed data and error checking
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    for ($i = 0; $i < sizeof($items); $i++) {
-      if (isset($_POST["$items[$i]"."check"])){
-        if (empty($_POST["$items[$i]"."req"])) {
-          $requestErr[] = "Reason is required";
+    foreach ($items as $item) {
+      $requestErr[$item] = "";
+      if (isset($_POST["$item"."check"])){
+        if (empty($_POST["$item"."req"])) {
+          $requestErr[$item] = "* Reason is required";
           $err = TRUE;
         } else {
-          $reason = $_POST["$items[$i]"."req"];
+          $reason = $_POST["$item"."req"];
           $requests[] = $reason;
-          $updateItems[] = $items[$i];
+          $updateItems[] = $item;
           if (isset($reason[255])) {
             $err = TRUE;
-            $requestErr[] = "Answer cannot exceed 255 characters";
+            $requestErr[$item] = "* Answer cannot exceed 255 characters";
           }
         }
       }
-    }
-    function test_input($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
     }
   }
 
@@ -113,6 +80,36 @@ include('session.php');
     <form method="post" action="">
       <div class="table">
         <?php
+        $quizformat = "Quizzes<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
+        $labformat = "Labs<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
+        $assignmentformat = "Assignments<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
+        $testformat = "Tests<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
+
+        $sql = "SELECT * FROM marks WHERE utorid='$studentid'";
+        $result = $db->query($sql);
+        if ($result->num_rows > 0) {
+          $row = $result->fetch_assoc();
+          $studentid = $row['utorid'];
+          foreach ($items as $item) {
+            $mark = $row["$item"];
+            $marks[] = $row["$item"];
+            $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\">".$_POST["$item"."req"]."</textarea> <span class=\"error\">".$requestErr[$item]."</span>";
+
+            if (stripos($item, 'quiz') !== FALSE) {
+              $quizformat = $quizformat.$adding;
+            } elseif (stripos($item, 'lab') !== FALSE) {
+              $labformat = $labformat.$adding;
+            } elseif (stripos($item, 'assignment') !== FALSE) {
+              $assignmentformat = $assignmentformat.$adding;
+            } elseif (stripos($item, 'test') !== FALSE) {
+              $testformat = $testformat.$adding;
+            }
+          }
+          $quizformat = $quizformat."</div><br>";
+          $labformat = $labformat."</div><br>";
+          $assignmentformat = $assignmentformat."</div><br>";
+          $testformat = $testformat."</div><br>";
+        }
         echo $quizformat;
         echo $labformat;
         echo $assignmentformat;
@@ -131,19 +128,21 @@ include('session.php');
     if (!$err) {
       for ($i = 0; $i < sizeof($requests); $i++) {
         $sql = $sql."INSERT INTO remarks (remarkitem, remarkreason, studentid) VALUES ('$updateItems[$i]', '$requests[$i]', '$studentid'); ";
-        // echo $updateItems[$i]." ".$requests[$i]." ".$studentid;
       }
       if ($db->multi_query($sql)) {
         $message = "Your remark request(s) got submitted";
         echo "<script type='text/javascript'>alert('$message'); location=\"viewmarks.php\"</script>";
       } else {
-        $message = "Error writing to database";
+        $message = "Error writing to database, no remark requests were submitted";
         echo "<script type='text/javascript'>alert('$message');</script>";
       }
-    } else {
+    } 
+    else {
       $message = "You have some errors in input";
       echo "<script type='text/javascript'>alert('$message');</script>";
     }
+    // header("Location: " . $_SERVER['REQUEST_URI']);
+    // exit();
   }
   include('footer.php');
   ?>
