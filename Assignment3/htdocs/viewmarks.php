@@ -31,6 +31,8 @@ include('session.php');
       }
     }
   }
+  // Sort so that items are displayed in order
+  sort($items);
   // Pulling all of the inputed data and error checking
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach ($items as $item) {
@@ -80,10 +82,17 @@ include('session.php');
     <form method="post" action="">
       <div class="table">
         <?php
-        $quizformat = "Quizzes<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
-        $labformat = "Labs<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
-        $assignmentformat = "Assignments<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
-        $testformat = "Tests<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div class=\"cell\">Remark</div></div>";
+        $quizformat = "Quizzes";
+        $labformat = "Labs";
+        $assignmentformat = "Assignments";
+        $testformat = "Tests";
+
+        $adding = "<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div id=\"remark\" class=\"cell\">Remark</div></div>";
+
+        $quizformat = $quizformat.$adding;
+        $labformat = $labformat.$adding;
+        $assignmentformat = $assignmentformat.$adding;
+        $testformat = $testformat.$adding;
 
         $sql = "SELECT * FROM marks WHERE utorid='$studentid'";
         $result = $db->query($sql);
@@ -93,7 +102,7 @@ include('session.php');
           foreach ($items as $item) {
             $mark = $row["$item"];
             $marks[] = $row["$item"];
-            $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\">".$_POST["$item"."req"]."</textarea> <span class=\"error\">".$requestErr[$item]."</span>";
+            $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input id=\"remark\" type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\">".$_POST["$item"."req"]."</textarea> <span class=\"error\">".$requestErr[$item]."</span>";
 
             if (stripos($item, 'quiz') !== FALSE) {
               $quizformat = $quizformat.$adding;
@@ -101,7 +110,7 @@ include('session.php');
               $labformat = $labformat.$adding;
             } elseif (stripos($item, 'assignment') !== FALSE) {
               $assignmentformat = $assignmentformat.$adding;
-            } elseif (stripos($item, 'test') !== FALSE) {
+            } elseif ((stripos($item, 'midterm') !== FALSE) || (stripos($item, 'exam') !== FALSE)) {
               $testformat = $testformat.$adding;
             }
           }
@@ -116,11 +125,13 @@ include('session.php');
         echo $testformat;
         ?>
       </div>
-    </div>
-    <div class="submitbutton">
-      <input id="submit" type="submit" name="submit" value="Submit Requests">
-    </div>
-  </form>
+    </form>
+  </div>
+
+  <div class="submitbutton">
+    <input id="submit" type="submit" name="submit" value="Submit Requests">
+  </div>
+  
   <?php
   // Process info after submit has been pressed
   if(isset($_POST['submit'])){
@@ -131,18 +142,18 @@ include('session.php');
       }
       if ($db->multi_query($sql)) {
         $message = "Your remark request(s) got submitted";
-        echo "<script type='text/javascript'>alert('$message'); location=\"viewmarks.php\"</script>";
+        // echo "<script type='text/javascript'>alert('$message'); location=\"viewmarks.php\"</script>";
       } else {
-        $message = "Error writing to database, no remark requests were submitted";
-        echo "<script type='text/javascript'>alert('$message');</script>";
+        $message = "No remark requests were submitted";
+        // echo "<script type='text/javascript'>alert('$message');</script>";
       }
     } 
     else {
       $message = "You have some errors in input";
-      echo "<script type='text/javascript'>alert('$message');</script>";
+      // echo "<script type='text/javascript'>alert('$message');</script>";
     }
-    // header("Location: " . $_SERVER['REQUEST_URI']);
-    // exit();
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
   }
   include('footer.php');
   ?>
