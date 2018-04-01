@@ -78,6 +78,14 @@ h4{
   text-align: top;
 }
 
+input[type=checkbox] + .textboxes {
+    display: none;
+}
+
+input[type=checkbox]:checked + .textboxes {
+    display: block;
+}
+
 textarea{
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

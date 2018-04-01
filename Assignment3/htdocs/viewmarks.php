@@ -15,7 +15,7 @@ include('session.php');
   <?php
   include('navbar.php');
   // define variables and set to empty values
-  $studentid = $mark = $message = $quizformat = $labformat = $assignmentformat = $testformat = $field = $remarks = $reason = $sqlcheck = $success = "";
+  $studentid = $mark = $message = $quizformat = $labformat = $assignmentformat = $testformat = $field = $remarks = $reason = $sqlcheck = $success = $textbox = $checkbox = $adding = "";
   $err = FALSE;
   $requestErr = $items = $marks = $requests = $updateItems = array();
   $studentid = $_SESSION['utorid'];
@@ -59,7 +59,10 @@ include('session.php');
     foreach ($items as $item) {
       $mark = $row["$item"];
       $marks[] = $row["$item"];
-      $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input id=\"remark\" type=\"checkbox\" name=\"$item"."check"."\"".$_SESSION["req"]["$item"."check"]."></div></div><textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\">".$_SESSION["req"]["$item"."req"]."</textarea> <div class=\"cell\"></div><div class=\"cell\"><span class=\"error\">".$_SESSION["err"]["$item"."err"]."</span></div>";
+      $error = "<span class=\"error\">".$_SESSION["err"]["$item"."err"]."</span>";
+      $textbox = "<textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\">".$_SESSION["req"]["$item"."req"]."</textarea>";
+      $checkbox = "<input id=\"remark\" type=\"checkbox\" name=\"$item"."check"."\"".$_SESSION["req"]["$item"."check"].">";
+      $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\">".$checkbox."</div></div>".$textbox."<div class=\"cell\"></div><div class=\"cell\">".$error."</div>";
 
       if (stripos($item, 'quiz') !== FALSE) {
         $quizformat = $quizformat.$adding;
