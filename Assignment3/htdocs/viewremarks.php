@@ -57,8 +57,10 @@ include('session.php');
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     for ($i = 0; $i < sizeof($unique); $i++) {
       $input = test_input($_POST["$unique[$i]"]);
-      $double = bcadd($input, "0", 2);
-      $double = floatval($double);
+      
+      //$double = bcadd($input, "0", 2);
+        $double = number_format($input, 2);
+      echo $double;
       if ($input != "") {
         if (!is_numeric($input)) {
           $markErr[$i] = "* Input must be numeric";
@@ -126,10 +128,11 @@ include('session.php');
       }
     }
 
-    if ($db->multi_query($sql) == TRUE) {
+   if ($db->multi_query($sql) == TRUE) {
       $message = "All changes have been recorded";
       echo "<script type='text/javascript'>alert('$message'); location=\"viewremarks.php\"</script>";
     }
+    
   }
   include('footer.php');
   ?>

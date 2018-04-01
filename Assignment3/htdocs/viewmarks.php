@@ -152,13 +152,13 @@ include('session.php');
         ?>
       </div>
 
-    </div>
+   
 
     <div class="submitbutton">
       <input id="submit" type="submit" name="submit" value="Submit Requests">
     </div>
   </form>
-  
+   </div>
   <?php
   // Process info after submit has been pressed
   if(isset($_POST['submit'])){

@@ -107,14 +107,14 @@ DROP TABLE IF EXISTS `marks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `marks` (
   `utorid` varchar(45) NOT NULL,
-  `quiz1` double DEFAULT NULL,
-  `quiz2` double DEFAULT NULL,
-  `assignment1` double DEFAULT NULL,
-  `assignment2` double DEFAULT NULL,
-  `lab1` double DEFAULT NULL,
-  `lab2` double DEFAULT NULL,
-  `Midterm` double DEFAULT NULL,
-  `FinalExam` double DEFAULT NULL,
+  `quiz1` DECIMAL(4,2) DEFAULT NULL,
+  `quiz2` Decimal(4,2) DEFAULT NULL,
+  `assignment1` Decimal(4,2) DEFAULT NULL,
+  `assignment2` Decimal(4,2) DEFAULT NULL,
+  `lab1` Decimal(4,2) DEFAULT NULL,
+  `lab2` Decimal(4,2) DEFAULT NULL,
+  `Midterm` Decimal(4,2) DEFAULT NULL,
+  `FinalExam` Decimal(4,2) DEFAULT NULL,
   PRIMARY KEY (`utorid`),
   UNIQUE KEY `utorid_UNIQUE` (`utorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
