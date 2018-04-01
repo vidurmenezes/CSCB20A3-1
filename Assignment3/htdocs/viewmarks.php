@@ -15,7 +15,7 @@ include('session.php');
   <?php
   include('navbar.php');
   // define variables and set to empty values
-  $studentid = $mark = $message = $quizformat = $labformat = $assignmentformat = $testformat = $field = "";
+  $studentid = $mark = $message = $quizformat = $labformat = $assignmentformat = $testformat = $field = $remarks = "";
   $err = FALSE;
   $markErr = $items = $marks = array();
 
@@ -44,13 +44,13 @@ include('session.php');
       $mark = $row["$item"];
       $marks[] = $row["$item"];
       if (stripos($item, 'quiz') !== FALSE) {
-        $quizformat = $quizformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div>";
+        $quizformat = $quizformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea name=\"$item"."req"."\" rows=\"3\">$remarks</textarea>";
       } elseif (stripos($item, 'lab') !== FALSE) {
-        $labformat = $labformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div>";
+        $labformat = $labformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea name=\"$item"."req"."\" rows=\"3\">$remarks</textarea>";
       } elseif (stripos($item, 'assignment') !== FALSE) {
-        $assignmentformat = $assignmentformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div>";
+        $assignmentformat = $assignmentformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea name=\"$item"."req"."\" rows=\"3\">$remarks</textarea>";
       } elseif (stripos($item, 'test') !== FALSE) {
-        $testformat = $testformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div>";
+        $testformat = $testformat."<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\"><input type=\"checkbox\" name=\"$item"."check"."\"></div></div><textarea name=\"$item"."req"."\" rows=\"3\">$remarks</textarea>";
       }
     }
     $quizformat = $quizformat."</div><br>";
