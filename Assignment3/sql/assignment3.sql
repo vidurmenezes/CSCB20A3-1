@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `assignment3` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `assignment3`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: assignment3
@@ -115,8 +113,8 @@ CREATE TABLE `marks` (
   `assignment2` double DEFAULT NULL,
   `lab1` double DEFAULT NULL,
   `lab2` double DEFAULT NULL,
-  `midtermtest` double DEFAULT NULL,
-  `finalexamtest` double DEFAULT NULL,
+  `Midterm` double DEFAULT NULL,
+  `FinalExam` double DEFAULT NULL,
   PRIMARY KEY (`utorid`),
   UNIQUE KEY `utorid_UNIQUE` (`utorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -128,7 +126,7 @@ CREATE TABLE `marks` (
 
 LOCK TABLES `marks` WRITE;
 /*!40000 ALTER TABLE `marks` DISABLE KEYS */;
-INSERT INTO `marks` VALUES ('studenta',45,84,65.5,89.6,86.2,75.5,54.8,65.3),('studentb',75.4,45.3,47.14,62,75,46,78.1,65),('studentid',74.2,92.3,55.9,95.6,95.3,100,78.2,56);
+INSERT INTO `marks` VALUES ('studenta',45,84,65.5,89.6,86.2,75.5,54.8,65.3),('studentb',75.4,45.3,47.14,62,75,46,78.1,65),('studentid',74.2,92.3,55.9,95.6,95.3,100,78.2,68.4);
 /*!40000 ALTER TABLE `marks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +145,7 @@ CREATE TABLE `remarks` (
   `studentid` varchar(45) NOT NULL,
   PRIMARY KEY (`requestid`),
   UNIQUE KEY `requestid_UNIQUE` (`requestid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,4 +225,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-31 16:23:52
+-- Dump completed on 2018-04-01 16:34:13
