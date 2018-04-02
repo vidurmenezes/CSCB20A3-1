@@ -34,10 +34,9 @@ ini_set('display_errors',0);
       echo "<a href=\"sendfeedback.php\">Send Feedback</a>";
       } else {
         echo "<a href=\"viewremarks.php\">View Remarks</a>";
-        echo "<a href=\"changemarks.php\">Change Marks</a>";
+        echo "<a href=\"viewallmarks.php\">Edit Marks</a>";
         if ($_SESSION['usertype'] == "instructors") {
           echo "<a href=\"viewfeedback.php\">View Feedback</a>";
-          echo "<a href=\"viewallmarks.php\">View Marks</a>";
         }
       }
   ?>
