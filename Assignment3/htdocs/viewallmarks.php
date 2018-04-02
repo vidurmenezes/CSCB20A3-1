@@ -76,7 +76,12 @@ include('session.php');
           while($row = mysqli_fetch_array($result)){
             if ($row['Field'] != "utorid") {
               echo $row['Field']."<br>";
-              echo "<option value=\"".$row['Field']."\">".$row['Field']."</option>";
+              if ($row['Field'] == $markchoice) {
+                echo "<option value=\"".$row['Field']."\" selected=\"selected\">".$row['Field']."</option>";
+              } else {
+                echo "<option value=\"".$row['Field']."\">".$row['Field']."</option>";
+
+              }
             }
           }
         } else {
@@ -134,7 +139,7 @@ include('session.php');
       if ($db->multi_query($sql)) {
         $message = "All changes have been recorded";
         echo "<script type='text/javascript'>alert('$message'); location=\"viewallmarks.php?type=$markchoice\"</script>";
-        
+
       }
     }
   }
