@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `assignment3` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `assignment3`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: assignment3
@@ -31,7 +33,7 @@ CREATE TABLE `feedback` (
   `question4` varchar(255) NOT NULL,
   PRIMARY KEY (`feedbackid`),
   UNIQUE KEY `feedbackid_UNIQUE` (`feedbackid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,14 +109,14 @@ DROP TABLE IF EXISTS `marks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `marks` (
   `utorid` varchar(45) NOT NULL,
-  `quiz1` double DEFAULT NULL,
-  `quiz2` double DEFAULT NULL,
-  `assignment1` double DEFAULT NULL,
-  `assignment2` double DEFAULT NULL,
-  `lab1` double DEFAULT NULL,
-  `lab2` double DEFAULT NULL,
-  `Midterm` double DEFAULT NULL,
-  `FinalExam` double DEFAULT NULL,
+  `quiz1` decimal(10,1) DEFAULT NULL,
+  `quiz2` decimal(10,1) DEFAULT NULL,
+  `assignment1` decimal(10,1) DEFAULT NULL,
+  `assignment2` decimal(10,1) DEFAULT NULL,
+  `lab1` decimal(10,1) DEFAULT NULL,
+  `lab2` decimal(10,1) DEFAULT NULL,
+  `Midterm` decimal(10,1) DEFAULT NULL,
+  `FinalExam` decimal(10,1) DEFAULT NULL,
   PRIMARY KEY (`utorid`),
   UNIQUE KEY `utorid_UNIQUE` (`utorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -126,7 +128,7 @@ CREATE TABLE `marks` (
 
 LOCK TABLES `marks` WRITE;
 /*!40000 ALTER TABLE `marks` DISABLE KEYS */;
-INSERT INTO `marks` VALUES ('studenta',45,84,65.5,89.6,86.2,75.5,54.8,65.3),('studentb',75.4,45.3,47.14,62,75,46,78.1,65),('studentid',74.2,92.3,55.9,95.6,95.3,100,78.2,68.4);
+INSERT INTO `marks` VALUES ('studenta',45.2,84.0,65.2,84.6,86.0,76.7,55.0,65.4),('studentb',78.1,45.1,85.3,64.8,75.6,46.0,78.1,65.5),('studentid',29.2,92.0,56.0,96.5,95.0,100.0,78.0,68.0);
 /*!40000 ALTER TABLE `marks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +147,7 @@ CREATE TABLE `remarks` (
   `studentid` varchar(45) NOT NULL,
   PRIMARY KEY (`requestid`),
   UNIQUE KEY `requestid_UNIQUE` (`requestid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,4 +227,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-01 16:34:13
+-- Dump completed on 2018-04-01 21:50:44

@@ -28,36 +28,25 @@ include('session.php');
         $studentarr[] = $id;
         $mark = $row["$markchoice"];
         $currMark[] = $mark;
-        $unique = $id.$mark;
-        $uniqueArr[] = $unique;
       }
     }
   }
   // Pulling all of the inputed data and error checking
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    for ($i = 0; $i < sizeof($uniqueArr); $i++) {
-      $input = test_input($_POST["$uniqueArr[$i]"]);
-      $double = bcadd($input, "0", 2);
-      $double = floatval($double);
-
+    for ($i = 0; $i < sizeof($studentarr); $i++) {
+      $input = $_POST["$studentarr[$i]"];
       if ($input != "") {
         if (!is_numeric($input)) {
           $markErr[$i] = "* Input must be numeric";
           $err = TRUE;
-        } elseif (!(0 <= $double && $double <= 100)) {
+        } elseif (!(0 <= $input && $input <= 100)) {
           $err = TRUE;
           $markErr[$i] = "* Mark must be between 0-100";
         } else {
-          $newMark[$i] = $double;
+          $newMark[$i] = $input;
         }
       }
     }
-  }
-  function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
   }
 
   function reload($data) {
@@ -77,7 +66,7 @@ include('session.php');
   </div>
 
   <div id="markchoice" class="dropdown">
-    <h2>Choose The NEED TO THINK OF NAME</h2>
+    <h2>Choose The Assessment Item</h2>
     <form id="choice" method="post">
       <select name="markcolumns">
         <?php
@@ -105,17 +94,16 @@ include('session.php');
         <?php
         if ($_GET["type"]) {
           echo "<div class=\"row\">";
-          echo "<div class=\"cell\">utorid</div>";
-          echo "<div class=\"cell\">$markchoice</div>";
+          echo "<div class=\"cellLeft\">utorid</div>";
+          echo "<div class=\"cellRight\">$markchoice</div>";
           echo "</div>";
-          for ($i = 0; $i < sizeof($uniqueArr); $i++) {
-            $unique = $uniqueArr[$i];
+          for ($i = 0; $i < sizeof($studentarr); $i++) {
             $id = $studentarr[$i];
             $mark = $currMark[$i];
             echo "<div class=\"row\">";
-            echo "<div class=\"cell\">$id</div>";
-            echo "<div class=\"cell\">";
-            echo "<input type=\"text\" name=\"$unique\" class=\"marks\" value=\"$mark\">";
+            echo "<div class=\"cellLeft\">$id</div>";
+            echo "<div class=\"cellRight\">";
+            echo "<input type=\"text\" name=\"$id\" class=\"marks\" value=\"$mark\">";
             echo "</div>";
             echo "</div>"; 
             echo "<br>";
@@ -137,7 +125,8 @@ include('session.php');
   elseif(isset($_POST['submit'])){
     $sql = "";
     if (!$err) {
-      for ($i = 0; $i < sizeof($uniqueArr); $i++) {
+      for ($i = 0; $i < sizeof($studentarr); $i++) {
+        echo $newMark[$i];
         if ($newMark[$i] != "" || is_numeric($newMark[$i])) {
           $sql = $sql."UPDATE marks SET $markchoice=$newMark[$i] WHERE utorid='$studentarr[$i]'; ";
         }
