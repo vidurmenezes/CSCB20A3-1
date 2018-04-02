@@ -13,49 +13,42 @@ include('session.php');
 <body>
   <?php
   include('navbar.php');
-  $sql = "SHOW COLUMNS FROM feedback";
-  $result = mysqli_query($db,$sql);
-  if ($result->num_rows > 0) {
-    while($row = mysqli_fetch_array($result)){
-      $field = $row['Field'];
-      if ($field != "utorid") {
-        $items[] = $field;
-      }
-    }
-  }
-  // $sql = "SELECT"
+  $id = $questionId = $question = $answer = $final = $buildingBlock = "";
+  $id = $_SESSION['utorid'];
   ?>
   <div id="background">
     <div id="CourseTitle">
       <div class="myBounceDiv">
-        <h1>NEWS</h1>
+        <h1>Feedback</h1>
         <br>
         <i class="far fa-newspaper fa-5x"></i>
       </div>
     </div>
   </div>
-  <div class="mainsection">
-    <h4>January 2, 2018</h4>
-    <p>
-      Sitting mistake towards his few country ask. You delighted two rapturous six depending objection happiness something the. Off nay impossible dispatched partiality unaffected. Norland adapted put ham cordial. Ladies talked may shy basket narrow see. Him
-      she distrusts questions sportsmen. Tolerably pretended neglected on my earnestly by. Sex scale sir style truth ought.
-    </p>
-  </div>
-  <div class="mainsection">
-    <h4>February 15, 2018</h4>
-    <p>
-      Agreed joy vanity regret met may ladies oppose who. Mile fail as left as hard eyes. Meet made call in mean four year it to. Prospect so branched wondered sensible of up. For gay consisted resolving pronounce sportsman saw discovery not. Northward or household
-      as conveying we earnestly believing. No in up contrasted discretion inhabiting excellence. Entreaties we collecting unpleasant at everything conviction.
-    </p>
-  </div>
-  <div class="mainsection">
-    <h4>March 2, 2018</h4>
-    <p>
-      Sussex result matter any end see. It speedily me addition weddings vicinity in pleasure. Happiness commanded an conveying breakfast in. Regard her say warmly elinor. Him these are visit front end for seven walls. Money eat scale now ask law learn. Side
-      its they just any upon see last. He prepared no shutters perceive do greatest. Ye at unpleasant solicitude in companions interested.
-    </p>
-  </div>
   <?php
+  $sqlquestions = "SELECT * FROM feedbackquestions";
+  $questions = mysqli_query($db,$sqlquestions);
+  if ($questions->num_rows > 0) {
+    while($row = mysqli_fetch_array($questions)){
+      $questionId = $row['QuestionID'];
+      $question = $row['Question'];
+
+      $buildingBlock = "<div class=\"mainsection\"><h4>$question</h4><ul>";
+
+      $sql = "SELECT $questionId FROM feedback WHERE instructorid='$id'";
+
+      $result = mysqli_query($db,$sql);
+      if ($result->num_rows > 0) {
+        while($row = mysqli_fetch_array($result)){
+          $answer = $row[0];
+          $buildingBlock = $buildingBlock."<li>$answer</li>";
+        }
+        $buildingBlock = $buildingBlock."</ul></div>";
+        $final = $final.$buildingBlock;
+      }
+    }
+  }
+  echo $final;
   include('footer.php');
   ?>
 </body>
