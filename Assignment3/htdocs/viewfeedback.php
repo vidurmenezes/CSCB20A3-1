@@ -1,5 +1,5 @@
 <?php
-   include('session.php');
+include('session.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,17 +12,28 @@
 </head>
 <body>
   <?php
-    include('navbar.php');
+  include('navbar.php');
+  $sql = "SHOW COLUMNS FROM feedback";
+  $result = mysqli_query($db,$sql);
+  if ($result->num_rows > 0) {
+    while($row = mysqli_fetch_array($result)){
+      $field = $row['Field'];
+      if ($field != "utorid") {
+        $items[] = $field;
+      }
+    }
+  }
+  // $sql = "SELECT"
   ?>
   <div id="background">
     <div id="CourseTitle">
-    <div class="myBounceDiv">
-      <h1>NEWS</h1>
-      <br>
-      <i class="far fa-newspaper fa-5x"></i>
-    </div>
+      <div class="myBounceDiv">
+        <h1>NEWS</h1>
+        <br>
+        <i class="far fa-newspaper fa-5x"></i>
       </div>
     </div>
+  </div>
   <div class="mainsection">
     <h4>January 2, 2018</h4>
     <p>
@@ -44,9 +55,9 @@
       its they just any upon see last. He prepared no shutters perceive do greatest. Ye at unpleasant solicitude in companions interested.
     </p>
   </div>
-<?php
-   include('footer.php');
-?>
+  <?php
+  include('footer.php');
+  ?>
 </body>
 
 </html>
