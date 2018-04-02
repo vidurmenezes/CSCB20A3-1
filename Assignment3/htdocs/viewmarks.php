@@ -116,18 +116,6 @@ include('session.php');
       }
     }
   }
-
-  
-  // function toggleContent($item) {
-  // // Get the DOM reference
-  //   echo $item;
-  //   echo "<script>
-  //   var contentId = document.getElementById($item);
-  //   contentId.style.display == \"block\" ? contentId.style.display = \"none\" : 
-  //   contentId.style.display = \"block\"; 
-  //   </script>";
-  // }
-
   ?>
 
   <div id="background">
@@ -151,14 +139,13 @@ include('session.php');
         echo $testformat;
         ?>
       </div>
-
-   
-
+    </div>
     <div class="submitbutton">
       <input id="submit" type="submit" name="submit" value="Submit Requests">
     </div>
+    
   </form>
-   </div>
+  
   <?php
   // Process info after submit has been pressed
   if(isset($_POST['submit'])){
