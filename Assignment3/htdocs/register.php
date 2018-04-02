@@ -23,7 +23,7 @@
          $_SESSION['register'] = 'false';
          $_SESSION['login_user'] = $utorid;
          $_SESSION['usertype'] = $usertype;
-          
+
         if($usertype == "students"){
             $marks = "marks";
             $student = "INSERT INTO ".$marks." VALUES (".$utorid.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)";
@@ -33,6 +33,7 @@
             }
         //  session_destroy(); 
          header("location: index.php");
+            
       } 
     }
      else {
