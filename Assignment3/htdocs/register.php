@@ -1,6 +1,5 @@
 <?php 
    ini_set('display_errors',0);
-
    include("config.php");
    if(session_id()==''){session_start();}
    if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -23,7 +22,6 @@
          $_SESSION['register'] = 'false';
          $_SESSION['login_user'] = $utorid;
          $_SESSION['usertype'] = $usertype;
-
         if($usertype == "students"){
             $marks = "marks";
             $student = "INSERT INTO ".$marks." VALUES (".$utorid.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)";

@@ -57,17 +57,13 @@ include('session.php');
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     for ($i = 0; $i < sizeof($unique); $i++) {
       $input = test_input($_POST["$unique[$i]"]);
-      
-      //$double = bcadd($input, "0", 2);
-        $double = number_format($input, 2);
-      echo $double;
       if ($input != "") {
         if (!is_numeric($input)) {
           $markErr[$i] = "* Input must be numeric";
-        } elseif (!(0 <= $double && $double <= 100)) {
+        } elseif (!(0 <= $input && $input <= 100)) {
           $markErr[$i] = "* Mark must be between 0-100";
         } else {
-          $newMark[$i] = $double;
+          $newMark[$i] = $input;
         }
       }
     }
