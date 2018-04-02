@@ -33,7 +33,7 @@ CREATE TABLE `feedback` (
   `question4` varchar(255) NOT NULL,
   PRIMARY KEY (`feedbackid`),
   UNIQUE KEY `feedbackid_UNIQUE` (`feedbackid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `feedback` (
 
 LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
-INSERT INTO `feedback` VALUES (1,'instid','q1 answer','q2 answer','q3 answer','q4 answer'),(2,'instaid','q1 answer','q2 answer','q3 answer','q4 answer'),(3,'instbid','q1 answer','q2 answer','q3 answer','q4 answer');
+INSERT INTO `feedback` VALUES (1,'instid','q1 answer','q2 answer','q3 answer','q4 answer'),(2,'instaid','q1 answer','q2 answer','q3 answer','q4 answer'),(3,'instbid','q1 answer','q2 answer','q3 answer','q4 answer'),(5,'instid','testing question1','testing question2','testing question3','testing question4');
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,11 +54,11 @@ DROP TABLE IF EXISTS `feedbackquestions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `feedbackquestions` (
-  `QuestionNumber` int(11) NOT NULL AUTO_INCREMENT,
+  `QuestionID` varchar(45) NOT NULL,
   `Question` varchar(255) NOT NULL,
-  PRIMARY KEY (`QuestionNumber`),
-  UNIQUE KEY `QuestionNumber_UNIQUE` (`QuestionNumber`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`QuestionID`),
+  UNIQUE KEY `QuestionNumber_UNIQUE` (`QuestionID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `feedbackquestions` (
 
 LOCK TABLES `feedbackquestions` WRITE;
 /*!40000 ALTER TABLE `feedbackquestions` DISABLE KEYS */;
-INSERT INTO `feedbackquestions` VALUES (1,'What do you like about the instructor teaching?'),(2,'What do you recommend the instructor to do to improve their teaching?'),(3,'What do you like about the labs?'),(4,'What do you recommend the lab instructors to do to improve their lab teaching?');
+INSERT INTO `feedbackquestions` VALUES ('question1','What do you like about the instructor teaching?'),('question2','What do you recommend the instructor to do to improve their teaching?'),('question3','What do you like about the labs?'),('question4','What do you recommend the lab instructors to do to improve their lab teaching?');
 /*!40000 ALTER TABLE `feedbackquestions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,7 +128,7 @@ CREATE TABLE `marks` (
 
 LOCK TABLES `marks` WRITE;
 /*!40000 ALTER TABLE `marks` DISABLE KEYS */;
-INSERT INTO `marks` VALUES ('studenta',86.8,84.0,65.2,56.0,86.0,76.7,55.0,65.4),('studentb',78.1,45.1,85.3,64.8,75.6,46.0,78.1,65.5),('studentid',56.0,85.0,56.0,96.5,95.0,100.0,78.0,68.0);
+INSERT INTO `marks` VALUES ('studenta',86.8,78.4,65.2,56.0,86.0,76.7,55.0,65.4),('studentb',78.1,45.1,85.3,64.8,75.6,46.0,78.1,65.5),('studentid',56.0,85.0,56.0,96.5,95.0,100.0,78.0,68.0);
 /*!40000 ALTER TABLE `marks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +147,7 @@ CREATE TABLE `remarks` (
   `studentid` varchar(45) NOT NULL,
   PRIMARY KEY (`requestid`),
   UNIQUE KEY `requestid_UNIQUE` (`requestid`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,4 +227,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-01 22:36:51
+-- Dump completed on 2018-04-02  3:52:09
