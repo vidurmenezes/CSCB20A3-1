@@ -56,6 +56,7 @@ option {
 .table {
   display: table;
   width: 100%;
+  height: auto;
 }
 .row {
   display: table-row;
