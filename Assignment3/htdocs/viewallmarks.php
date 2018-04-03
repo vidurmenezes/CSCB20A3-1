@@ -89,7 +89,7 @@ include('session.php');
         }
         ?>
       </select>
-      <input type="submit" name="choose" value="Generate Marks">
+      <input type="submit" id="generate" name="choose" value="Generate Marks">
     </form> 
   </div>
   <div class="mainsection">
@@ -99,8 +99,8 @@ include('session.php');
         <?php
         if ($_GET["type"]) {
           echo "<div class=\"row\">";
-          echo "<div class=\"cellLeft\">utorid</div>";
-          echo "<div class=\"cellRight\">$markchoice</div>";
+          echo "<div class=\"cellLeft\"><b class=\"miniheaders\">utorid</b></div>";
+          echo "<div class=\"cellRight\"><b class=\"miniheaders\">$markchoice</b></div>";
           echo "</div>";
           for ($i = 0; $i < sizeof($studentarr); $i++) {
             $id = $studentarr[$i];
@@ -120,6 +120,8 @@ include('session.php');
     </div>
     <div class="submitbutton">
       <input id="submit" type="submit" name="submit" value="Submit">
+      <br>
+    <br>
     </div>
   </form>
   <?php

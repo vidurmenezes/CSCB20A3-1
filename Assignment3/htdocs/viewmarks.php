@@ -164,7 +164,7 @@ include('session.php');
       $_SESSION['success'] = "You have some errors in input";
     }
     header("Location: viewmarks.php");
-    exit();
+    //exit();
   }
   include('footer.php');
   ?>

@@ -1,5 +1,5 @@
 #background {
-  background-image: url(./img/background6.jpg);
+  background-image: url(./img/background10.jpg);
   overflow: auto;
   height: 600px;
   -webkit-background-size: cover;
@@ -25,17 +25,17 @@ h3 {
 }
 
 .mainsection {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
+   text-align: center;
   color: black;
   margin: 30px;
-  margin-left: 10%;
+    height: auto;
+  margin-left: 24%;
   margin-right: 10%;
   border: 1px solid black;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: white;
-  border-radius: 25px;
+  border-radius: 14px;
+    width: 50%;
 }
 
 .dropdown{
@@ -50,30 +50,6 @@ option {
 
 .marks {
   width:45px;
-  text-align: center;
-}
-
-input[type=text] {
-    padding:5px; 
-    border:2px solid #ccc; 
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
-
-input[type=text]:focus {
-    border-color:#333;
-}
-
-input[type=submit] {
-    padding:5px 15px; 
-    background:#ccc; 
-    border:0 none;
-    cursor:pointer;
-    -webkit-border-radius: 5px;
-    border-radius: 5px; 
-}
-
-.submitbutton {
   text-align: center;
 }
 
@@ -97,4 +73,109 @@ input[type=submit] {
   height:100%;
   text-align: left;
   padding-left:10%;
+}
+
+
+#CourseTitle {
+  color: white;
+  font-size: 20px;
+  background-color: transparent;
+  text-align: center;
+  width: 100%;
+  margin-top: 150px;
+}
+
+
+.miniheaders{
+    color:#2095f2;
+   
+    font-size: 16px;
+}
+
+input[type=text] {
+    padding:5px; 
+    border:2px solid #ccc; 
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+
+}
+
+input[type=text]:focus {
+    border-color:#333;
+}
+
+
+input[type=submit]#generate {
+    position: relative;
+    background-color: #4CAF50;
+    font-size: 12px;
+    color: #FFFFFF;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    left: 0%;
+      
+    
+}
+input[type=submit] {
+    position: relative;
+    background-color: #4CAF50;
+    border: none;
+    font-size: 16px;
+    color: #FFFFFF;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    left: 42%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+select {
+background-position:300px;
+width:300px;
+padding:10px;
+margin-top:8px;
+background-color:#2095f2;
+color:white;
+font-size:14px;
+-webkit-appearance:none;
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  
+outline:none
+}
+
+@media screen and (max-width: 860px) {
+
+  #background {
+    background-image: url(./img/background10.jpg);
+  }
+  #mainsection {
+  text-align: center;
+  color: black;
+  margin: 30px;
+    height: auto;
+  margin-left: 10%;
+  margin-right: 10%;
+  width:300px;
+}
+ input[type=submit] {
+    left: 34%;
+    width: 150px;
+     padding: 8px;
+    
+}
+select {
+background-position:300px;
+width:170px;
+padding:10px;
+margin-top:8px;
+background-color:#2095f2;
+color:white;
+font-size:14px;
+
+}
+
 }

@@ -7,6 +7,7 @@ include('session.php');
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="viewremarks.css">
+    
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
 </head>
@@ -49,8 +50,8 @@ include('session.php');
       $unique[] = $studentid.$item;
       $sql = "SELECT $item FROM marks WHERE utorid='$studentid'";
       $mark = $db->query($sql)->fetch_assoc()[$item];
-      $info[] = "StudentID: ".$studentid."<br>Item: ".$item;
-      $request[] = "Mark Received: ".$mark."<br>Request Reason: ".$row['remarkreason'];
+      $info[] = "<br><b class=\"miniheaders\">StudentID:</b>".$studentid."<br><b class=\"miniheaders\">Item:</b>".$item;
+      $request[] = "<b class=\"miniheaders\">Mark Received: </b>".$mark."<br><b class=\"miniheaders\">Request Reason:  </b>".$row['remarkreason'];
     }
   }
   // Pulling all of the inputed data and error checking
@@ -88,31 +89,38 @@ include('session.php');
   </div>
   <?php
   if (sizeof($unique) == 0) {
-    echo "<h3 style=\"text-align: center;\"> No Remark Requests At This Time</h3>";
+       echo "<div class='alert'>";
+  echo "<span class='closebtn' onclick=\"this.parentElement.style.display='none';\"></span>";
+  echo "<strong>&nbsp;&nbsp;No Remark Requests At This Time</strong>";
+  echo "</div>";
+    
   } else {
     ?>
     <form method="post" action="">
       <?php
     // Format for each remark request
       for ($i = 0; $i < sizeof($unique); $i++) {
-        echo "<div class=\"mainsection\">";
+        echo "<div id=\"mainsection\" class=\"myBounceDiv\">";
         $fullrequest = $info[$i]."<br>".$request[$i];
         echo $fullrequest;
         echo "<br>";
         echo "<br>";
-        echo "New Mark: ";
+        echo "<b class=\"miniheaders\">New Mark:</b> ";
         echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
         echo "<span class=\"error\">".$markErr[$i]."</span><br>";
         echo "</div>";
 
       }
       ?>
-      <div class="submitbutton">
+     
         <input id="submit" type="submit" name="submit" value="Submit">
-      </div>
+        
+        
     </form>
+    <br>
     <?php
   }
+
   ?>
   <?php
   // Process info after submit has been pressed
@@ -130,6 +138,7 @@ include('session.php');
     }
     
   }
+  
   include('footer.php');
   ?>
 </body>
