@@ -11,6 +11,43 @@ include('session.php');
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
 </head>
 
+<script>
+  function validate(itemList) {
+    var error = false;
+    var noneChecked = true;
+    for (var i = 0; i < itemList.length; i++) {
+      var item = itemList[i];
+      var isChecked = document.getElementById(item + "check").checked;
+      if (isChecked) {
+        noneChecked = false;
+        var input = document.getElementById(item + "reason").value.trim();
+        if (input == "") {
+          document.getElementById(item + "error").innerHTML = "* Reason is required";
+          error = true;
+        } else if (input.length > 255) {
+          document.getElementById(item + "error").innerHTML = "* Must be less than 255 characters";
+          error = true;
+        } else {
+          document.getElementById(item + "error").innerHTML = "";
+        }
+      } else {
+        document.getElementById(item + "error").innerHTML = "";
+      }
+    }
+    if (noneChecked) {
+      scroll(0,0);
+      alert("You did not select any items to be remarked");
+    } else if (!error) {
+      // window.location.href = "viewmarks.php?submit=true";
+      document.getElementById("mainform").submit();
+    } else {
+      scroll(0,0);
+      alert("You have some errors");
+    }
+  }  
+
+</script>
+
 <body>
   <?php
   include('navbar.php');
@@ -38,6 +75,8 @@ include('session.php');
   }
   // Sort so that items are displayed in order
   sort($items);
+  $items_json = json_encode($items);
+  $items_json = str_replace("\"", "'",$items_json);
 
   $quizformat = "Quizzes";
   $labformat = "Labs";
@@ -59,9 +98,9 @@ include('session.php');
     foreach ($items as $item) {
       $mark = $row["$item"];
       $marks[] = $row["$item"];
-      $error = "<span class=\"error\">".$_SESSION["err"]["$item"."err"]."</span>";
-      $textbox = "<textarea id=\"$item\" name=\"$item"."req"."\" rows=\"3\">".$_SESSION["req"]["$item"."req"]."</textarea>";
-      $checkbox = "<input id=\"remark\" type=\"checkbox\" name=\"$item"."check"."\"".$_SESSION["req"]["$item"."check"].">";
+      $error = "<div id=\"$item"."error\"class=\"error\"></div>";
+      $textbox = "<textarea id=\"$item"."reason\" name=\"$item"."reason\" rows=\"3\"></textarea>";
+      $checkbox = "<input id=\"$item"."check\" type=\"checkbox\" name=\"$item"."check\">";
       $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\">".$checkbox."</div></div>".$textbox."<div class=\"cell\"></div><div class=\"cell\">".$error."</div>";
 
       if (stripos($item, 'quiz') !== FALSE) {
@@ -79,43 +118,6 @@ include('session.php');
     $assignmentformat = $assignmentformat."</div><br>";
     $testformat = $testformat."</div><br>";
   }
-
-  $_SESSION["err"] = array();
-  $_SESSION["req"] = array();
-
-  // Pulling all of the inputed data and error checking
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    foreach ($items as $item) {
-      $requestErr[$item] = "";
-      
-      if (isset($_POST["$item"."check"])){
-        $sqlcheck = "SELECT requeststatus FROM remarks WHERE remarkitem='$item' AND studentid='$studentid'";
-        $_SESSION["req"]["$item"."check"] = "checked";
-        $result = mysqli_query($db,$sqlcheck);
-        if (mysqli_query($db,$sqlcheck)->num_rows > 0) {
-          $requestErr[$item] = "* Request already submitted";
-          $_SESSION["err"]["$item"."err"] = $requestErr[$item];
-          $err = TRUE;
-        } else {
-          if (empty($_POST["$item"."req"])) {
-            $requestErr[$item] = "* Reason is required";
-            $_SESSION["err"]["$item"."err"] = $requestErr[$item];
-            $err = TRUE;
-          } else {
-            $reason = $_POST["$item"."req"];
-            $_SESSION["req"]["$item"."req"] = $reason;
-            $requests[] = $reason;
-            $updateItems[] = $item;
-            if (isset($reason[255])) {
-              $err = TRUE;
-              $requestErr[$item] = "* Answer cannot exceed 255 characters";
-              $_SESSION["err"]["$item"."err"] = $requestErr[$item];
-            }
-          }
-        }
-      }
-    }
-  }
   ?>
 
   <div id="background">
@@ -130,41 +132,54 @@ include('session.php');
 
   <div class="mainsection">
 
-    <form method="post" action="">
+    <form id="mainform" method="post" action="">
       <div class="table">
         <?php
         echo $quizformat;
         echo $labformat;
         echo $assignmentformat;
-        echo $testformat;
+        echo $testformat; 
         ?>
       </div>
     </div>
-    <div class="submitbutton">
-      <input id="submit" type="submit" name="submit" value="Submit Requests">
-    </div>
     
   </form>
+  <div class="submitbutton">
+    <button id="submit" name="submit" onclick="validate(<?php echo $items_json; ?>)">Submit Requests</button>
+  </div>
+
+  
   
   <?php
   // Process info after submit has been pressed
-  if(isset($_POST['submit'])){
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    foreach ($items as $item) {
+      if (isset($_POST["$item"."check"])){
+        // $counter = $counter + 1;
+        // $sqlcheck = "SELECT requeststatus FROM remarks WHERE remarkitem='$item' AND studentid='$studentid'";
+        // $_SESSION["req"]["$item"."check"] = "checked";
+        // $result = mysqli_query($db,$sqlcheck);
+        // if (mysqli_query($db,$sqlcheck)->num_rows > 0) {
+        //   $requestErr[$item] = "* Request already submitted";
+        //   $_SESSION["err"]["$item"."err"] = $requestErr[$item];
+        //   $err = TRUE;
+        // } else {
+          $reason = $_POST["$item"."reason"];
+          $requests[] = $reason;
+          $updateItems[] = $item;
+
+        // }
+      }
+    }
     $sql = "";
-    if (!$err) {
-      for ($i = 0; $i < sizeof($requests); $i++) {
-        $sql = $sql."INSERT INTO remarks (remarkitem, remarkreason, studentid) VALUES ('$updateItems[$i]', '$requests[$i]', '$studentid'); ";
-      }
-      if ($db->multi_query($sql)) {
-        $_SESSION['success'] = "Your remark request(s) got submitted";
-        $_SESSION["req"] = array();
-        $_SESSION["err"] = array();
-      }
-    } 
-    else {
-      $_SESSION['success'] = "You have some errors in input";
+    for ($i = 0; $i < sizeof($requests); $i++) {
+      $sql = $sql."INSERT INTO remarks (remarkitem, remarkreason, studentid) VALUES ('$updateItems[$i]', '$requests[$i]', '$studentid'); ";
+    }
+    if ($db->multi_query($sql)) {
+      $_SESSION['success'] = "Your remark request(s) got submitted";
     }
     header("Location: viewmarks.php");
-    //exit();
+    exit();
   }
   include('footer.php');
   ?>
