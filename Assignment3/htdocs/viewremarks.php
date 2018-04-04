@@ -7,35 +7,25 @@ include('session.php');
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="viewremarks.css">
-    
+
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script><!--Used fontawesome for icons -->
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet"> <!--Used google fonts for some fonts -->
 </head>
 
 <body>
   <?php
+  ob_start();
   include('navbar.php');
-  // test mark and remark table
-  // echo "<br><br>";
-  // $sql = "SELECT * FROM marks";
-  // $result = $db->query($sql);
-  // if ($result->num_rows > 0) {
-  //   while ($row = $result->fetch_assoc()) {
-  //     $print = $row['utorid'].": ".$row['quiz1'].", ".$row['quiz2'].", ".$row['assignment1'].", ".$row['assignment2']."<br>";
-  //     echo $print;
-  //   }
-  // }
-  // $sql = "SELECT * FROM remarks";
-  // $result = $db->query($sql);
-  // if ($result->num_rows > 0) {
-  //   while ($row = $result->fetch_assoc()) {
-  //     $print = $row['requestid'].": ".$row['requeststatus'].", ".$row['remarkitem'].", ".$row['remarkreason'].", ".$row['studentid']."<br>";
-  //     echo $print;
-  //   }
-  // }
   // define variables and set to empty values
   $item = $studentid = $mark = $fullrequest = $message =  "";
   $info = $request = $studentarr = $itemarr = $newMark = $markErr = $unique = array();
+
+  if ($_SESSION['success'] != "") {
+    $success = $_SESSION['success'];
+    echo "<script type='text/javascript'>alert('$success');</script>";
+  }
+  $_SESSION['success'] = "";
+
   // Setting up all the arrays and variables
   $sql = "SELECT requestid, remarkitem, remarkreason, studentid FROM remarks WHERE requeststatus=1";
   $result = $db->query($sql);
@@ -89,58 +79,52 @@ include('session.php');
   </div>
   <?php
   if (sizeof($unique) == 0) {
-       echo "<div class='alert'>";
-  echo "<span class='closebtn' onclick=\"this.parentElement.style.display='none';\"></span>";
-  echo "<strong>&nbsp;&nbsp;No Remark Requests At This Time</strong>";
-  echo "</div>";
-    
-  } else {
-    ?>
-    <form method="post" action="">
-      <?php
-    // Format for each remark request
-      for ($i = 0; $i < sizeof($unique); $i++) {
-        echo "<div id=\"mainsection\" class=\"myBounceDiv\">";
-        $fullrequest = $info[$i]."<br>".$request[$i];
-        echo $fullrequest;
-        echo "<br>";
-        echo "<br>";
-        echo "<b class=\"miniheaders\">New Mark:</b> ";
-        echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
-        echo "<span class=\"error\">".$markErr[$i]."</span><br>";
-        echo "</div>";
+   echo "<div class='alert'>";
+   echo "<span class='closebtn' onclick=\"this.parentElement.style.display='none';\"></span>";
+   echo "<strong>&nbsp;&nbsp;No Remark Requests At This Time</strong>";
+   echo "</div>";
 
-      }
-      ?>
-     
-        <input id="submit" type="submit" name="submit" value="Submit">
-        
-        
-    </form>
-    <br>
+ } else {
+  ?>
+  <form method="post" action="">
     <?php
-  }
-
-  ?>
-  <?php
-  // Process info after submit has been pressed
-  if(isset($_POST['submit'])){
-    $sql = "";
+    // Format for each remark request
     for ($i = 0; $i < sizeof($unique); $i++) {
-      if (($newMark[$i] != "" || is_numeric($newMark[$i])) && $markErr[$i] == "") {
-        $sql = $sql."UPDATE marks SET $itemarr[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]' AND remarkitem = '$itemarr[$i]'; ";
-      }
-    }
+      echo "<div id=\"mainsection\" class=\"myBounceDiv\">";
+      $fullrequest = $info[$i]."<br>".$request[$i];
+      echo $fullrequest;
+      echo "<br>";
+      echo "<br>";
+      echo "<b class=\"miniheaders\">New Mark:</b> ";
+      echo "<input type=\"text\" name=\"$unique[$i]\" class=\"marks\">";
+      echo "<span class=\"error\">".$markErr[$i]."</span><br>";
+      echo "</div>";
 
-   if ($db->multi_query($sql) == TRUE) {
-      $message = "All changes have been recorded";
-      echo "<script type='text/javascript'>alert('$message'); location=\"viewremarks.php\"</script>";
     }
-    
+    ?>
+    <input id="submit" type="submit" name="submit" value="Submit">
+  </form>
+  <br>
+  <?php
+}
+
+?>
+<?php
+  // Process info after submit has been pressed
+if(isset($_POST['submit'])){
+  $sql = "";
+  for ($i = 0; $i < sizeof($unique); $i++) {
+    if (($newMark[$i] != "" || is_numeric($newMark[$i])) && $markErr[$i] == "") {
+      $sql = $sql."UPDATE marks SET $itemarr[$i]=$newMark[$i] WHERE utorid='$studentarr[$i]'; UPDATE remarks SET requeststatus=0 WHERE studentid='$studentarr[$i]' AND remarkitem = '$itemarr[$i]'; ";
+    }
   }
-  
-  include('footer.php');
-  ?>
+  if ($db->multi_query($sql)) {
+    $_SESSION['success'] = "New marks successfully submitted";
+    header("Location: viewremarks.php");
+  }
+}
+include('footer.php');
+?>
 </body>
 
 </html>

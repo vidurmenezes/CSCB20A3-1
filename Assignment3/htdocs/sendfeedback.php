@@ -13,11 +13,19 @@ include('session.php');
 
 <body>
   <?php
+  ob_start();
   include('navbar.php');
   // define variables and set to empty values
   $answer1 = $answer2 = $answer3 = $answer4 = $instructor = "";
   $answer1Err = $answer2Err = $answer3Err = $answer4Err = "";
   $column = array();
+
+  if ($_SESSION['success'] != "") {
+    $success = $_SESSION['success'];
+    echo "<script type='text/javascript'>alert('$success');</script>";
+  }
+  $_SESSION['success'] = "";
+
   $sql = "SELECT Question FROM feedbackquestions";
   $result = $db->query($sql);
   if ($result->num_rows > 0) {
@@ -125,19 +133,20 @@ include('session.php');
       if ($answer1Err == '' && $answer2Err == '' && $answer3Err == '' && $answer4Err == '') {
         $sql = "INSERT INTO feedback (instructorid, question1, question2, question3, question4) VALUES ('$instructor', '$answer1', '$answer2', '$answer3', '$answer4')";
         if ($db->query($sql) == TRUE) {
-          $message = "Thank you, your feedback, was successfully submitted";
-          echo "<script type='text/javascript'>alert('$message'); location=\"sendfeedback.php\"</script>";
+          $_SESSION['success'] = "Your feedback got successfully submitted";
+
         } else {
-           $message = "Error: ".$sql."<br>".$db->error;
-           echo "<script type='text/javascript'>alert('$message');</script>";
-        }
-      }
-    }
-    ?>
-  </div>
-  <?php
-  include('footer.php');
-  ?>
+         $message = "Error: ".$sql."<br>".$db->error;
+         echo "<script type='text/javascript'>alert('$message');</script>";
+       }
+       header("Location: sendfeedback.php");
+     }
+   }
+   ?>
+ </div>
+ <?php
+ include('footer.php');
+ ?>
 </body>
 
 </html>

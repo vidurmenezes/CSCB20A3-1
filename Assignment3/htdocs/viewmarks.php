@@ -50,6 +50,7 @@ include('session.php');
 
 <body>
   <?php
+  ob_start();
   include('navbar.php');
   // define variables and set to empty values
   $studentid = $mark = $message = $quizformat = $labformat = $assignmentformat = $testformat = $field = $remarks = $reason = $sqlcheck = $success = $textbox = $checkbox = $adding = "";
@@ -148,27 +149,14 @@ include('session.php');
     <button id="submit" name="submit" onclick="validate(<?php echo $items_json; ?>)">Submit Requests</button>
   </div>
 
-  
-  
   <?php
   // Process info after submit has been pressed
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     foreach ($items as $item) {
       if (isset($_POST["$item"."check"])){
-        // $counter = $counter + 1;
-        // $sqlcheck = "SELECT requeststatus FROM remarks WHERE remarkitem='$item' AND studentid='$studentid'";
-        // $_SESSION["req"]["$item"."check"] = "checked";
-        // $result = mysqli_query($db,$sqlcheck);
-        // if (mysqli_query($db,$sqlcheck)->num_rows > 0) {
-        //   $requestErr[$item] = "* Request already submitted";
-        //   $_SESSION["err"]["$item"."err"] = $requestErr[$item];
-        //   $err = TRUE;
-        // } else {
-          $reason = $_POST["$item"."reason"];
-          $requests[] = $reason;
-          $updateItems[] = $item;
-
-        // }
+        $reason = $_POST["$item"."reason"];
+        $requests[] = $reason;
+        $updateItems[] = $item;
       }
     }
     $sql = "";
@@ -179,7 +167,6 @@ include('session.php');
       $_SESSION['success'] = "Your remark request(s) got submitted";
     }
     header("Location: viewmarks.php");
-    exit();
   }
   include('footer.php');
   ?>
