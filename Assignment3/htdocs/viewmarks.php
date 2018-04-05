@@ -1,5 +1,9 @@
 <?php
 include('session.php');
+if($_SESSION['students'] != true){
+    header("location:index.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -79,12 +83,12 @@ include('session.php');
   $items_json = json_encode($items);
   $items_json = str_replace("\"", "'",$items_json);
 
-  $quizformat = "Quizzes";
-  $labformat = "Labs";
-  $assignmentformat = "Assignments";
-  $testformat = "Tests";
+  $quizformat = "<div class=\"titles\">Quizzes</div>";
+  $labformat = "<div class=\"titles\">Labs</div>";
+  $assignmentformat = "<div class=\"titles\">Assignments</div>";
+  $testformat = "<div class=\"titles\">Tests</div>";
 
-  $adding = "<br><div class=\"table\"><div class=\"row\"><div class=\"cell\">Item</div><div class=\"cell\">Mark</div><div id=\"remark\" class=\"cell\">Remark</div></div><br>";
+  $adding = "<br><div class=\"table\"><div class=\"row\"><div class=\"cell\" id =\"headings\">Item</div><div class=\"cell\"id =\"headings\">Mark</div><div id=\"remark\" class=\"cell\">Remark</div></div><br>";
 
   $quizformat = $quizformat.$adding;
   $labformat = $labformat.$adding;
@@ -100,10 +104,11 @@ include('session.php');
       $mark = $row["$item"];
       $marks[] = $row["$item"];
       $error = "<div id=\"$item"."error\"class=\"error\"></div>";
-      $textbox = "<textarea id=\"$item"."reason\" name=\"$item"."reason\" rows=\"3\"></textarea>";
+      
       $checkbox = "<input id=\"$item"."check\" type=\"checkbox\" name=\"$item"."check\">";
-      $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\">".$checkbox."</div></div>".$textbox."<div class=\"cell\"></div><div class=\"cell\">".$error."</div>";
-
+      $textbox = "<textarea  placeholder=\"Reason for remark request\" class=\"textbox\" id=\"$item"."reason\" name=\"$item"."reason\" rows=\"3\"></textarea>";
+      $adding = "<div class=\"row\"><div class=\"cell\">$item</div><div class=\"cell\">$mark</div><div class=\"cell\">".$checkbox."</div></div><br>".$textbox."<br><div class=\"cell\"></div><div class=\"cell\">".$error."</div>";
+      
       if (stripos($item, 'quiz') !== FALSE) {
         $quizformat = $quizformat.$adding;
       } elseif (stripos($item, 'lab') !== FALSE) {
@@ -145,9 +150,9 @@ include('session.php');
     </div>
     
   </form>
-  <div class="submitbutton">
-    <button id="submit" name="submit" onclick="validate(<?php echo $items_json; ?>)">Submit Requests</button>
-  </div>
+    <br>
+    <button class="submitbutton"id="submit" name="submit" onclick="validate(<?php echo $items_json; ?>)">Submit Requests</button>
+   
 
   <?php
   // Process info after submit has been pressed
@@ -168,6 +173,7 @@ include('session.php');
     }
     header("Location: viewmarks.php");
   }
+  echo "<br>";
   include('footer.php');
   ?>
 </body>

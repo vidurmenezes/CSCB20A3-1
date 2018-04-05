@@ -1,5 +1,9 @@
 <?php
 include('session.php');
+if($_SESSION['students'] != true){
+    header("location:index.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html>

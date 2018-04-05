@@ -26,7 +26,23 @@ if(session_id()==''){session_start();}
   </div>
 </div>
 </div>
-
+<?php 
+    echo "<div class=\"mainsection\"><h2> Important Links</h2>";
+      if ($_SESSION['usertype'] == "students") {
+      
+      echo  "<a href=\"viewmarks.php\">Click here to View your Marks</a><br>";
+      echo  "<a href=\"sendfeedback.php\">Click here toSend anonomous feedback</a><br>";
+      }
+     else {
+        echo "<a href=\"viewremarks.php\">Click here to View Remarks</a><br>";
+        echo "<a href=\"viewallmarks.php\">Click here to Edit Marks</a><br>";
+        if ($_SESSION['usertype'] == "instructors") {
+          echo "<a href=\"viewfeedback.php\">Click here to View Feedback</a><br>";
+        }
+      }
+    echo"<br></div>";
+      
+?>  
 <div class="mainsection">
   <h2> Course Description</h2>
 

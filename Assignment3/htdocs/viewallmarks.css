@@ -1,3 +1,6 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;  
+}
 #background {
   background-image: url(./img/background10.jpg);
   overflow: auto;
@@ -135,17 +138,35 @@ input[type=submit] {
     left: 42%;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-select {
+select {line-height:normal;
+
 background-position:300px;
 width:300px;
 padding:10px;
 margin-top:8px;
+background:#fff url(img/down.png) repeat-x 0 0;
 background-color:#2095f2;
 color:white;
 font-size:14px;
 -webkit-appearance:none;
      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  
 outline:none
+
+}
+select option:hover {line-height:normal;
+
+background-position:300px;
+width:300px;
+padding:10px;
+margin-top:8px;
+
+background-color:black;
+color:white;
+font-size:14px;
+-webkit-appearance:none;
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  
+outline:none
+
 }
 
 @media screen and (max-width: 860px) {
