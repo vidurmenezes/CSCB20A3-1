@@ -2,7 +2,7 @@
    define('DB_SERVER', '127.0.0.1');
    define('DB_USERNAME', 'root');
    define('DB_PASSWORD', 'root');
-   define('DB_DATABASE', 'assignment3');
+   define('DB_DATABASE', 'a3');
 
   /* define('DB_SERVER', 'mathlab.utsc.utoronto.ca');
    define('DB_USERNAME', 'coreibaa');
